@@ -1,0 +1,22 @@
+* { box-sizing: border-box; }
+html { background: #f3f5f1; }
+body { margin: 0; padding: 14px; font-family: "Plus Jakarta Sans", system-ui, "Segoe UI", Roboto, Arial, sans-serif; color: #14201c; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+dl { margin: 0; }
+.rc { position: relative; max-width: 520px; margin: 0 auto; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(20,32,28,.06), 0 10px 28px -16px rgba(20,32,28,.3); }
+.rc-cab { background: #164d3c; color: #fff; padding: 18px 22px; min-height: 64px; display: flex; align-items: center; font-weight: 800; font-size: 1.15rem; overflow-wrap: anywhere; }
+.rc-cab img { display: block; max-width: 220px; max-height: 56px; height: auto; width: auto; }
+.rc-cuerpo { padding: 20px 22px 6px; }
+.rc-tit { margin: 0; font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: #4f5d57; font-weight: 700; }
+.rc-num { margin: 2px 0 14px; font-size: 1.5rem; font-weight: 800; }
+.rc-anulado { color: #d92d33; font-size: .8rem; letter-spacing: .06em; margin-left: 8px; }
+.rc-monto { margin: 0 0 14px; padding: 14px; background: #f1f5f2; border-radius: 12px; text-align: center; font-size: 1.9rem; font-weight: 800; }
+.rc-fila { padding: 9px 0; border-top: 1px solid #dde3dd; }
+.rc-fila dt { font-size: .74rem; color: #4f5d57; font-weight: 600; }
+.rc-fila dd { margin: 2px 0 0; font-weight: 700; overflow-wrap: anywhere; }
+.rc-pie { padding: 14px 22px 18px; font-size: .78rem; color: #4f5d57; line-height: 1.5; overflow-wrap: anywhere; }
+.rc-sello { position: absolute; top: 42%; left: 50%; transform: translate(-50%, -50%) rotate(-18deg); border: 4px solid #d92d33; color: #d92d33; opacity: .78; font-size: 2.6rem; font-weight: 800; padding: 6px 18px; border-radius: 10px; letter-spacing: .04em; pointer-events: none; }
+@media print {
+  html, body { background: #fff; }
+  body { padding: 0; }
+  .rc { box-shadow: none; max-width: none; border: 1px solid #dde3dd; }
+}

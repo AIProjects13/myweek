@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self'; frame-src 'none'; connect-src 'self'; base-uri 'self'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>MyWeek · Manual de uso</title>
+<meta name="description" content="Manual de uso de MyWeek para escuelas de manejo: qué puede hacer Administración y Recepción, cada pantalla, cada formulario campo por campo, lo que calcula solo, las reglas de la agenda y dónde se guarda cada dato.">
+<meta name="theme-color" content="#1f6b53">
+<link rel="canonical" href="https://myweek.pixantech.net/manual.html">
+<link rel="icon" href="img/favicon.svg?v=8347dbddc6" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="MyWeek">
+<meta property="og:locale" content="es_GT">
+<meta property="og:title" content="MyWeek · Manual de uso">
+<meta property="og:description" content="Cómo se usa MyWeek, perfil por perfil y formulario por formulario.">
+<meta property="og:image" content="https://myweek.pixantech.net/img/og.jpg">
+<meta property="og:url" content="https://myweek.pixantech.net/manual.html">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/landing.css?v=2ea5561093">
+<link rel="stylesheet" href="css/manual.css?v=273063e3dd">
+<script src="js/frame-guard.js?v=3c0d0a7037"></script>
+<script src="js/manual.js?v=56c53a89f3" defer></script>
+</head>
+<body class="manual">
+<a class="skip" href="#contenido">Saltar al contenido</a>
+
+<header class="hdr" id="top">
+  <div class="wrap hdr-in">
+    <a class="logo" href="index.html" aria-label="MyWeek, página principal"><img src="img/marca/myweek-logotipo-horizontal.svg?v=6f036f17ae" alt="MyWeek" width="374" height="64"></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#demo">Demo</a>
+      <a href="#niveles">Perfiles</a>
+      <a href="#formularios">Formularios</a>
+      <a href="#preguntas">Preguntas</a>
+    </nav>
+    <div class="hdr-act">
+      <a class="btn sm" data-wa href="https://wa.me/50258253416" target="_blank" rel="noopener">Quiero MyWeek</a>
+    </div>
+  </div>
+</header>
+
+<main id="contenido">
+<section class="m-hero">
+  <div class="wrap">
+    <p class="kicker">Manual de uso</p>
+    <h1>MyWeek, paso a paso.</h1>
+    <p class="lead">Qué puede hacer cada perfil, cómo se llena cada formulario campo por campo, en qué pantalla se hace cada cosa, qué reglas sigue la agenda, qué calcula MyWeek por usted y dónde queda guardado cada dato. Las capturas son de la <a href="index.html#demo">demo</a>, con la Escuela de Manejo El Volante de ejemplo.</p>
+    <p class="en-note" lang="en">This user manual is in Spanish. <a href="index.html?lang=en">Go to the English site</a>.</p>
+    <ul class="m-perfiles">
+      <li><a href="#p-admin"><b>Administración</b><span>Todo lo de Recepción, más planes, instructores, usuarios, caja del día, archivo de recibos, progreso y configuración.</span></a></li>
+      <li><a href="#p-recepcion"><b>Recepción</b><span>El día a día: alumnos, ventas en cuotas, agenda, cobros y recibos de la semana.</span></a></li>
+      <li><a href="#p-ingreso"><b>Primer ingreso</b><span>Cómo recibe cada persona su acceso y cómo recupera su contraseña.</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<div class="wrap m-layout">
+<details class="toc" id="indice" open>
+  <summary><span>En este manual</span><b id="tocActual">Contenido</b></summary>
+  <nav aria-label="Contenido del manual">
+  <ol>
+    <li><a href="#organizacion">1. Cómo se organiza la información</a></li>
+    <li><a href="#niveles">2. Perfiles y permisos</a></li>
+    <li><a href="#ingreso">3. Entrar a MyWeek</a></li>
+    <li><a href="#comunes">4. Lo que es igual en todas las pantallas</a></li>
+    <li><a href="#pantallas">5. Las pantallas, una por una</a></li>
+    <li><a href="#formularios">6. Formularios, campo por campo</a></li>
+    <li><a href="#calculos">7. Lo que MyWeek calcula solo</a></li>
+    <li><a href="#reglas">8. Reglas que conviene conocer</a></li>
+    <li><a href="#flujos">9. Paso a paso, por perfil</a></li>
+    <li><a href="#tablas">10. Dónde se guarda cada dato</a></li>
+    <li><a href="#seguridad">11. Seguridad</a></li>
+    <li><a href="#preguntas">12. Preguntas frecuentes</a></li>
+  </ol>
+  </nav>
+</details>
+
+<article class="doc">
+
+<!-- ════════════ 1 ════════════ -->
+<section id="organizacion">
+<h2><span>1</span>Cómo se organiza la información</h2>
+<p>Todo en MyWeek cuelga de una misma cadena. Usted vende un <b>plan</b> a un <b>alumno</b>; esa <b>venta</b> se paga en <b>cuotas</b> y se usa en <b>clases</b> con un <b>instructor</b>. Cada pago deja un <b>recibo</b>. Con eso MyWeek sabe, en todo momento, cuánto debe cada alumno y cuántas clases le quedan.</p>
+<ol class="cadena" aria-label="Cadena de la información">
+  <li><b>Escuela</b><span>Sus datos, horario y días de atención (Configuración).</span></li>
+  <li><b>Plan</b><span>Lo que vende: clases, horas y precio de lista (Planes).</span></li>
+  <li><b>Alumno</b><span>Nombre, teléfono, correo y nota.</span></li>
+  <li><b>Venta</b><span>El plan que compró el alumno, con las clases, horas y precio acordados y a nombre de quién van los recibos.</span></li>
+  <li><b>Cuotas y pagos</b><span>Cuándo vence cada parte del precio y qué se ha pagado; cada pago tiene su recibo.</span></li>
+  <li class="fin"><b>Clases</b><span>Cada clase de la venta, con su instructor, fecha, hora, duración y estado.</span></li>
+</ol>
+
+<h3>Palabras que usa MyWeek</h3>
+<dl class="glosario">
+  <dt>Plan</dt><dd>Un paquete que la escuela vende: por ejemplo «Básico, 8 clases, 8 horas, Q 1,200.00». En la pantalla Planes al número de clases se le llama «Citas».</dd>
+  <dt>Venta o paquete</dt><dd>Un plan vendido a un alumno. Copia las clases, horas y precio del plan, y usted puede ajustarlos al vender (un descuento, una clase de regalo). Un alumno puede tener varias ventas.</dd>
+  <dt>Cuota</dt><dd>Una parte del precio con su fecha de vencimiento. Una venta al contado tiene una sola cuota que vence el día de la venta.</dd>
+  <dt>Clase o cita</dt><dd>Una sesión de manejo con fecha, hora, duración e instructor. Su estado es <i>Programada</i>, <i>Dada</i>, <i>No se presentó</i> o <i>Cancelada</i>.</dd>
+  <dt>Descontar</dt><dd>Que una clase cuente como usada del paquete aunque no se haya dado (cancelada a última hora o alumno que no llegó). Una clase dada siempre se descuenta.</dd>
+  <dt>Reagendar</dt><dd>Mover una clase programada a otra fecha, hora o instructor. Queda en el historial de la clase.</dd>
+  <dt>Saldo</dt><dd>Lo que falta por pagar de una venta.</dd>
+  <dt>Estado de cobro</dt><dd><span class="chip verde">Pagado</span> <span class="chip azul">Al día</span> <span class="chip ambar">Por vencer</span> <span class="chip rojo">Vencido</span>. Vea <a href="#calculos">Lo que MyWeek calcula solo</a>.</dd>
+  <dt>Recibo</dt><dd>El comprobante de un pago, con número R-año-consecutivo. Es un comprobante interno, no una factura.</dd>
+  <dt>Anular</dt><dd>Dejar sin efecto una venta o un pago sin borrarlo: queda a la vista, marcado como anulado, con quién lo hizo y por qué. Solo Administración anula.</dd>
+  <dt>Semana</dt><dd>De domingo a sábado, en hora de Guatemala.</dd>
+  <dt>Días y horario de atención</dt><dd>Los días y las horas en que se pueden agendar clases. Si no los cambia: lunes a sábado, de 06:00 a 20:00.</dd>
+  <dt>Tabla</dt><dd>Donde MyWeek guarda cada tipo de dato (alumnos, ventas, clases…). Vea <a href="#tablas">Dónde se guarda cada dato</a>.</dd>
+</dl>
+</section>
+
+<!-- ════════════ 2 ════════════ -->
+<section id="niveles">
+<h2><span>2</span>Perfiles y permisos</h2>
+<p>MyWeek tiene <b>2 niveles de acceso</b>: <b>Administrador</b> y <b>Recepción</b>. El nivel de cada persona lo decide Administración en la pantalla Usuarios. MyWeek lo revisa en <b>cada</b> acción: no basta con ocultar un botón, el sistema rechaza lo que a ese nivel no le corresponde.</p>
+
+<div class="perfil" id="p-admin">
+  <h3>Administración <small>nivel Administrador</small></h3>
+  <p>Ve y hace todo. Además de lo de Recepción, administra el catálogo (planes e instructores), las cuentas del personal, la configuración de la escuela, ve la <b>caja del día</b>, el <b>archivo completo de recibos</b> y el <b>progreso</b> semanal y mensual, mira la agenda de cualquier fecha pasada y es la única que <b>anula</b> ventas y recibos.</p>
+  <p class="menu-de"><b>Su menú:</b> Hoy · Agenda · Alumnos · Cobros; y, en el grupo Administración: Recibos · Progreso · Planes · Instructores · Usuarios · Configuración.</p>
+</div>
+<div class="perfil" id="p-recepcion">
+  <h3>Recepción <small>nivel Recepción</small></h3>
+  <p>Lleva el día a día: registra alumnos y ventas (al contado o en cuotas), agenda, reagenda y cancela clases, marca las clases dadas, cobra y entrega recibos. Cuando una clase se mueve con menos de 24 horas, quien atiende decide si se descuenta. Trabaja <b>en la semana actual</b>: no ve la agenda de semanas pasadas ni los pagos registrados antes del domingo.</p>
+  <p class="menu-de"><b>Su menú:</b> Hoy · Agenda · Alumnos · Cobros.</p>
+  <figure class="shot"><img src="img/shots/esc-hoy-recepcion.jpg?v=62aad76e01" alt="Pantalla Hoy de Recepción, con el menú sin Recibos, Progreso, Planes, Instructores, Usuarios ni Configuración" loading="lazy" width="1600" height="1000"><figcaption>Recepción ve el mismo día, sin la caja ni las pantallas de Administración en el menú.</figcaption></figure>
+</div>
+
+<h3>Quién puede hacer qué</h3>
+<p>Esta tabla sale directamente de las reglas de MyWeek: 30 acciones, 11 solo de Administración y 7 que Recepción puede hacer con un límite.</p>
+<div class="tabla-wrap"><table class="matriz"><thead><tr><th scope="col">Acción</th><th scope="col">Administración</th><th scope="col">Recepción</th></tr></thead><tbody><tr class="grupo"><td colspan="3">Entrar y ver el día</td></tr><tr><td class="acc">Entrar y ver la pantalla Hoy (clases del día, avisos y cifras)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="lim" data-l="Recepción"><span aria-hidden="true">◐</span> Sí, sin la caja del día</td></tr><tr class="grupo"><td colspan="3">Agenda y clases</td></tr><tr><td class="acc">Ver los instructores al agendar</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Ver la agenda (mes, semana, día y lista)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="lim" data-l="Recepción"><span aria-hidden="true">◐</span> Sí, desde la semana actual (no ve semanas pasadas)</td></tr><tr><td class="acc">Agendar clases nuevas</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Reagendar una clase (y decidir si se descuenta cuando faltan menos de 24 horas)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Cancelar una clase</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Marcar una clase como dada o «no se presentó»</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Ver el historial de cambios de una clase</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr class="grupo"><td colspan="3">Alumnos y ventas</td></tr><tr><td class="acc">Ver los planes al vender</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Ver la lista de alumnos con su avance y su estado de pago</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Registrar un alumno o corregir sus datos</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Abrir la ficha de un alumno</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="lim" data-l="Recepción"><span aria-hidden="true">◐</span> Sí; en la ficha ve solo los pagos registrados esta semana</td></tr><tr><td class="acc">Vender un plan (al contado o en cuotas)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Editar una venta (clases, horas, precio, a nombre de, nota y cuotas)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Anular una venta</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr class="grupo"><td colspan="3">Cobros y recibos</td></tr><tr><td class="acc">Registrar un pago y obtener su recibo</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="si" data-l="Recepción"><span class="ok" aria-hidden="true">✓</span> Sí</td></tr><tr><td class="acc">Ver los pagos registrados</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="lim" data-l="Recepción"><span aria-hidden="true">◐</span> Solo los registrados esta semana</td></tr><tr><td class="acc">Volver a abrir el recibo de un pago</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="lim" data-l="Recepción"><span aria-hidden="true">◐</span> Solo de pagos registrados esta semana</td></tr><tr><td class="acc">Anular un recibo (pago)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Enviar el recibo por correo</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="lim" data-l="Recepción"><span aria-hidden="true">◐</span> Solo de pagos registrados esta semana</td></tr><tr><td class="acc">Compartir, descargar o imprimir el recibo (queda anotado por dónde salió)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="lim" data-l="Recepción"><span aria-hidden="true">◐</span> Solo de pagos registrados esta semana</td></tr><tr class="grupo"><td colspan="3">Administración de la escuela</td></tr><tr><td class="acc">Ver el progreso de la semana o del mes</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Ver la configuración de la escuela</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Cambiar la configuración (datos del recibo, horario, avisos)</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Ver los usuarios y su último acceso</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Crear usuarios con su contraseña inicial</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Cambiar nombre, nivel o desactivar un usuario</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Cambiar la contraseña de un usuario</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Crear, cambiar o desactivar instructores</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr><tr><td class="acc">Crear, cambiar o desactivar planes</td><td class="si" data-l="Administración"><span class="ok" aria-hidden="true">✓</span> Sí</td><td class="no" data-l="Recepción"><span aria-hidden="true">—</span> No</td></tr></tbody></table></div>
+<p class="nota">Recepción sí <b>edita</b> ventas (clases, horas, a nombre de y nota; el precio y las cuotas, mientras la venta no tenga pagos), pero no las anula. Ve los planes y los instructores porque los necesita para vender y agendar, pero no los cambia.</p>
+</section>
+
+<!-- ════════════ 3 ════════════ -->
+<section id="ingreso">
+<h2><span>3</span>Entrar a MyWeek</h2>
+<figure class="shot"><img src="img/shots/esc-login.jpg?v=8a99d850a0" alt="Pantalla de entrada con correo, contraseña, botón Entrar y enlace ¿Olvidaste tu contraseña?" loading="lazy" width="1600" height="1000"><figcaption>La entrada: correo, contraseña y «¿Olvidaste tu contraseña?». El recuadro de ayuda solo aparece en la demo.</figcaption></figure>
+<ol class="pasos">
+  <li>Abra la dirección de MyWeek de su escuela en el celular o en la computadora.</li>
+  <li>Escriba su <b>correo</b> y su <b>contraseña</b> y toque <b>Entrar</b>. Con el ojo puede ver lo que escribió.</li>
+  <li>Llega a <b>Hoy</b>, con las clases y los avisos del día.</li>
+</ol>
+
+<div class="perfil" id="p-ingreso">
+  <h3>Primer ingreso <small>cómo recibe cada persona su acceso</small></h3>
+  <p>MyWeek <b>no usa contraseñas temporales</b>. Hay dos casos:</p>
+  <ul class="notas">
+    <li><b>El primer administrador</b> (al instalar MyWeek) recibe un <b>correo para definir su contraseña</b>. Abre el enlace, escribe la suya y entra. Si no lo ve, que revise el correo no deseado o use «¿Olvidaste tu contraseña?».</li>
+    <li><b>El resto del equipo</b> lo crea Administración en <b>Usuarios → Nuevo usuario</b>, con su correo, su nombre, su nivel y una <b>contraseña inicial</b> (el botón <i>Generar</i> crea una de 12 caracteres). Administración la anota y se la entrega en privado: después no se vuelve a mostrar.</li>
+  </ul>
+</div>
+
+<h3>Si olvidó su contraseña</h3>
+<ol class="pasos">
+  <li>En la entrada, escriba su correo arriba.</li>
+  <li>Toque <b>«¿Olvidaste tu contraseña?»</b>.</li>
+  <li>Le llega un enlace para crear una contraseña nueva. Por seguridad, MyWeek no dice si ese correo tiene cuenta o no.</li>
+</ol>
+<p>Administración también puede poner una contraseña nueva en <b>Usuarios → (la persona) → Cambiar contraseña</b>. Toda contraseña debe tener de 8 a 64 caracteres, con al menos una letra y un número.</p>
+
+<h3>Cuándo no se puede entrar</h3>
+<ul class="notas">
+  <li>Si Administración <b>desactivó</b> al usuario: aparece «Tu perfil está desactivado».</li>
+  <li>Si el correo no está registrado en Usuarios, aunque la contraseña sea correcta.</li>
+  <li>Después de muchos intentos fallidos seguidos: hay que esperar unos minutos.</li>
+</ul>
+<p>Para salir, use <b>Cerrar sesión</b> (en la barra lateral o en «Más», en el celular). Hágalo siempre en equipos compartidos.</p>
+</section>
+
+<!-- ════════════ 4 ════════════ -->
+<section id="comunes">
+<h2><span>4</span>Lo que es igual en todas las pantallas</h2>
+<div class="duo-shots">
+  <figure class="shot movil"><img src="img/shots/cel-hoy.jpg?v=91b02e7a7b" alt="Hoy en el celular, con la barra de abajo: Hoy, Agenda, más, Alumnos y Más" loading="lazy" width="780" height="1688"><figcaption>En el celular: barra de abajo con Hoy, Agenda, Alumnos, el botón verde <b>+</b> y <b>Más</b>.</figcaption></figure>
+  <figure class="shot movil"><img src="img/shots/cel-menu.jpg?v=1b6286578b" alt="Panel Más del celular con el resto de las pantallas, el tema y Cerrar sesión" loading="lazy" width="780" height="1688"><figcaption>«Más» abre el resto del menú, el tema claro u oscuro y Cerrar sesión.</figcaption></figure>
+</div>
+<dl class="glosario">
+  <dt>Menú</dt><dd>En la computadora, a la izquierda; se puede <b>retraer</b> para dejar solo los íconos. Las pantallas de Administración van en su propio grupo. En el celular, la barra de abajo y el botón <b>Más</b>.</dd>
+  <dt>Botón Nuevo (+)</dt><dd>Desde cualquier pantalla: <b>Nueva cita</b>, <b>Nuevo alumno / venta</b> o <b>Registrar pago</b>.</dd>
+  <dt>Campana de avisos</dt><dd>Arriba a la derecha. El número cuenta los avisos de hoy que piden atención (clases sin confirmar, clases que empiezan en menos de 60 minutos, cuotas vencidas o por vencer y alumnos con pocas clases). Al tocarla se abren los <b>Avisos de hoy</b>.</dd>
+  <dt>Recordatorio</dt><dd>Con MyWeek abierto, 15 minutos antes de cada clase aparece un aviso con la hora y el alumno.</dd>
+  <dt>Tema claro u oscuro</dt><dd>El botón de luna o sol. Por defecto sigue al del equipo.</dd>
+  <dt>Paneles</dt><dd>Los formularios y detalles se abren a un lado (computadora) o desde abajo (celular), sin perder la pantalla de atrás. Se cierran con la ×. Si escribió algo en una venta sin guardarla, MyWeek pregunta antes de descartarla.</dd>
+  <dt>Buscar</dt><dd>En Alumnos, Nueva cita, Registrar pago y Recibos se busca mientras escribe, sin importar tildes ni mayúsculas. En Alumnos también por teléfono.</dd>
+  <dt>Colores</dt><dd>Cada instructor tiene su color en la agenda. Verde = dada o pagada, azul = al día, ámbar = por vencer o no se presentó, rojo = vencida, sin confirmar o anulada. El color siempre va con una palabra: nunca depende solo de él.</dd>
+</dl>
+<figure class="shot"><img src="img/shots/esc-alertas.jpg?v=2cbd1c191e" alt="Panel Avisos de hoy con una clase sin confirmar, clases por empezar, cuotas vencidas y por vencer" loading="lazy" width="1600" height="1000"><figcaption>Avisos de hoy: en rojo lo que ya pasó (clase sin confirmar, cuota vencida), en ámbar lo que viene (cuota por vencer).</figcaption></figure>
+</section>
+
+<!-- ════════════ 5 ════════════ -->
+<section id="pantallas">
+<h2><span>5</span>Las pantallas, una por una</h2>
+<p>Resumen de las pantallas del menú y quién las ve:</p>
+<div class="tabla-wrap"><table class="pantallas"><thead><tr><th scope="col">Pantalla</th><th scope="col">Qué muestra</th><th scope="col">En el celular</th><th scope="col">Administración</th><th scope="col">Recepción</th></tr></thead><tbody><tr><td><b>Hoy</b></td><td>Las clases del día o de la semana, los avisos de dinero y de alumnos, y las cifras del día.</td><td>Barra de abajo</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`</tr><tr><td><b>Agenda</b></td><td>El calendario de clases en mes, semana, día o lista, con filtro por instructor.</td><td>Barra de abajo</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`</tr><tr><td><b>Alumnos</b></td><td>La lista de alumnos con búsqueda, su plan, su avance y su estado de pago.</td><td>Barra de abajo</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`</tr><tr><td><b>Cobros</b></td><td>Las cuotas por cobrar (vencidas y por vencer) y los pagos de la semana.</td><td>Botón «Más»</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`</tr><tr><td><b>Recibos</b></td><td>El archivo de todos los recibos, con búsqueda, filtro por método y anulación.</td><td>Botón «Más»</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="no" data-l="${l}"><span aria-hidden="true">—</span> No</td>`</tr><tr><td><b>Progreso</b></td><td>Las cifras de la semana o del mes: cobrado, clases, alumnos nuevos, pendiente y horas por instructor.</td><td>Botón «Más»</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="no" data-l="${l}"><span aria-hidden="true">—</span> No</td>`</tr><tr><td><b>Planes</b></td><td>El catálogo de planes que se venden.</td><td>Botón «Más»</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="no" data-l="${l}"><span aria-hidden="true">—</span> No</td>`</tr><tr><td><b>Instructores</b></td><td>Los instructores que dan clases.</td><td>Botón «Más»</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="no" data-l="${l}"><span aria-hidden="true">—</span> No</td>`</tr><tr><td><b>Usuarios</b></td><td>Las personas que pueden entrar a MyWeek y su nivel.</td><td>Botón «Más»</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="no" data-l="${l}"><span aria-hidden="true">—</span> No</td>`</tr><tr><td><b>Configuración</b></td><td>Los datos de la escuela, el correo del recibo, el horario de atención y los avisos.</td><td>Botón «Más»</td>(l) => `<td class="si" data-l="${l}"><span class="ok" aria-hidden="true">✓</span> Sí</td>`(l) => `<td class="no" data-l="${l}"><span aria-hidden="true">—</span> No</td>`</tr></tbody></table></div>
+
+<div class="pantalla" id="s-hoy">
+<h3>Hoy</h3>
+<p>La primera pantalla al entrar. Pestañas <b>Día</b> y <b>Semana</b>. Arriba, las cifras: <b>citas de hoy</b>, <b>clases dadas hoy</b>, <b>cuotas por cobrar</b> y, solo para Administración, la <b>caja del día</b> (lo cobrado hoy). Debajo, las clases con su hora, instructor, duración y en qué clase del paquete va el alumno («3 de 8»); luego los bloques <b>Dinero</b> (cuotas vencidas y por vencer) y <b>Alumnos</b> (los que están por terminar su paquete).</p>
+<p>Al tocar una clase programada aparecen sus botones: <b>Dada</b> y <b>No se presentó</b> (solo cuando ya empezó) y <b>Reagendar</b>. Las clases de días pasados que nadie marcó siguen aquí como <span class="chip rojo">Sin confirmar</span> hasta que se marquen.</p>
+<p class="afecta"><b>Datos que cambia:</b> marcar una clase cambia su estado en la tabla Clases, anota el movimiento en el Historial de clases y actualiza el avance del paquete.</p>
+<figure class="shot"><img src="img/shots/esc-hoy-admin.jpg?v=1474e00974" alt="Hoy de Administración con citas de hoy, clases dadas, cuotas por cobrar, caja del día y la lista de clases" loading="lazy" width="1600" height="1000"><figcaption>Hoy como Administración: cuatro cifras arriba (con la caja del día) y las clases de hoy con su estado.</figcaption></figure>
+</div>
+
+<div class="pantalla" id="s-agenda">
+<h3>Agenda</h3>
+<p>El calendario de clases en cuatro vistas: <b>Mes</b>, <b>Semana</b>, <b>Día</b> y <b>Lista</b>. Con las flechas pasa al periodo anterior o siguiente, y <b>Hoy</b> vuelve a la fecha actual. Los botones de instructor filtran sus clases. Tocar un día del mes abre ese día; tocar una clase abre su detalle. <b>Nueva cita</b> abre el formulario.</p>
+<p>Recepción no puede ir a semanas anteriores a la actual (la flecha hacia atrás se apaga).</p>
+<div class="duo-shots">
+  <figure class="shot"><img src="img/shots/esc-agenda-semana.jpg?v=264ce75db4" alt="Agenda en vista semanal con clases de colores por instructor" loading="lazy" width="1600" height="1000"><figcaption>Semana: una columna por día y un color por instructor.</figcaption></figure>
+  <figure class="shot"><img src="img/shots/esc-agenda-mes.jpg?v=d667dfa148" alt="Agenda en vista mensual con las clases de cada día" loading="lazy" width="1600" height="1000"><figcaption>Mes: las primeras clases de cada día y cuántas hay.</figcaption></figure>
+  <figure class="shot"><img src="img/shots/esc-agenda-dia.jpg?v=e530237fdf" alt="Agenda de un día en columnas por hora" loading="lazy" width="1600" height="1000"><figcaption>Día: las clases en la línea de horas; si dos se cruzan, van lado a lado.</figcaption></figure>
+  <figure class="shot"><img src="img/shots/esc-agenda-recepcion.jpg?v=7233d44231" alt="Agenda semanal vista por Recepción, con el menú reducido" loading="lazy" width="1600" height="1000"><figcaption>La misma semana vista por Recepción.</figcaption></figure>
+</div>
+<figure class="shot movil"><img src="img/shots/cel-agenda-semana.jpg?v=50becfc4f1" alt="Agenda de la semana en el celular, como lista por día" loading="lazy" width="780" height="1688"><figcaption>En el celular, la semana se muestra como lista por día.</figcaption></figure>
+</div>
+
+<div class="pantalla" id="s-clase">
+<h3>Detalle de una clase</h3>
+<p>Se abre al tocar una clase en Hoy, Agenda o la ficha del alumno. Muestra fecha, hora de inicio y fin, instructor, paquete y en qué clase va, cuántas veces se reagendó, la nota y el <b>historial</b> (quién la agendó, la movió, la canceló o la marcó, y cuándo). Botones: <b>Dada</b>, <b>No se presentó</b> (cuando ya empezó), <b>Reagendar</b>, <b>Cancelar clase</b> y <b>Ver al alumno</b>.</p>
+<p class="afecta"><b>Datos que cambia:</b> tabla Clases (fecha, hora, instructor, duración, estado, si se descuenta, veces reagendada) y una fila nueva en el Historial de clases por cada movimiento.</p>
+<div class="duo-shots">
+  <figure class="shot"><img src="img/shots/esc-cita-abierta.jpg?v=e696a37a8d" alt="Detalle de una clase programada con Reagendar, Cancelar e historial" loading="lazy" width="1600" height="1000"><figcaption>Una clase programada: acciones e historial.</figcaption></figure>
+  <figure class="shot movil"><img src="img/shots/cel-cita-abierta.jpg?v=9bd03552fe" alt="Detalle de una clase en el celular" loading="lazy" width="780" height="1688"><figcaption>El mismo detalle en el celular.</figcaption></figure>
+</div>
+</div>
+
+<div class="pantalla" id="s-alumnos">
+<h3>Alumnos y ficha del alumno</h3>
+<p><b>Alumnos</b> lista a todos con su plan, cuántas clases lleva («5 de 12») y su peor estado de cobro. Se busca por nombre o teléfono y se filtra por <b>Todos</b>, <b>Con clases pendientes</b> o <b>Vencidos</b>. Muestra 30 a la vez (botón «Ver más»).</p>
+<p>La <b>ficha</b> tiene los datos del alumno (con botón de WhatsApp si hay teléfono), <b>Editar datos</b> y <b>Nueva venta</b>. Por cada venta: precio y si tuvo descuento, avance de clases y horas, botones <b>Agendar</b>, <b>Registrar pago</b>, <b>Editar venta</b> y, para Administración, <b>Anular venta</b>; las cuotas con su estado (Pagada, Parcial, Pendiente, Vencida), las clases próximas y anteriores, y los pagos. Recepción ve los pagos de la semana; el historial completo es de Administración.</p>
+<p class="afecta"><b>Datos que cambia:</b> Alumnos (datos), Ventas y Cuotas (al vender, editar o anular).</p>
+<figure class="shot"><img src="img/shots/esc-alumnos.jpg?v=06706736bc" alt="Lista de alumnos con búsqueda, filtros, plan, avance y estado de pago" loading="lazy" width="1600" height="1000"><figcaption>Lista de alumnos con su avance y su estado de pago.</figcaption></figure>
+<div class="duo-shots">
+  <figure class="shot"><img src="img/shots/esc-alumno-ficha.jpg?v=1d2a854964" alt="Ficha de alumno con su venta, avance, cuotas y botones" loading="lazy" width="1600" height="1000"><figcaption>Ficha: paquete, avance, cuotas y acciones.</figcaption></figure>
+  <figure class="shot movil"><img src="img/shots/cel-alumno-ficha.jpg?v=1376a342af" alt="Ficha de alumno en el celular" loading="lazy" width="780" height="1688"><figcaption>La ficha en el celular.</figcaption></figure>
+</div>
+</div>
+
+<div class="pantalla" id="s-cobros">
+<h3>Cobros</h3>
+<p>Dos pestañas. <b>Por cobrar</b>: cada cuota vencida (con los días de atraso) o que vence en los próximos 7 días, con el total vencido y por vencer; al tocar una, se abre el pago ya preparado para esa cuota. <b>Pagos de la semana</b>: lo cobrado y cuántos recibos; tocar un pago abre su recibo. Administración puede ver también <b>Este mes</b> u <b>Otro rango</b>. El botón <b>Registrar pago</b> está siempre arriba.</p>
+<div class="duo-shots">
+  <figure class="shot"><img src="img/shots/esc-cobros.jpg?v=9f7bde3a9f" alt="Cobros por cobrar, con cuotas vencidas y por vencer" loading="lazy" width="1600" height="1000"><figcaption>Por cobrar: vencido en rojo, por vencer en ámbar.</figcaption></figure>
+  <figure class="shot movil"><img src="img/shots/cel-cobros.jpg?v=4d44755c57" alt="Cobros en el celular" loading="lazy" width="780" height="1688"><figcaption>Cobros en el celular.</figcaption></figure>
+</div>
+</div>
+
+<div class="pantalla" id="s-recibo">
+<h3>Recibo</h3>
+<p>Se abre al registrar un pago o al tocar un pago. Lleva el nombre (o logo), teléfono y dirección de la escuela, número de recibo, monto, alumno, a nombre de, concepto («Plan Básico · cuota 2 de 3»), fecha, método, referencia, <b>saldo de la venta</b> después de ese pago y quién lo registró. Botones: <b>Compartir</b> (como imagen por WhatsApp, Messenger u otra aplicación del teléfono; si el equipo no puede, ofrece WhatsApp en texto, descargar la imagen o imprimir), <b>Correo</b> e <b>Imprimir</b>. Un recibo anulado sale con el sello ANULADO y no se envía por correo.</p>
+<p class="afecta"><b>Datos que cambia:</b> en Pagos y recibos se anota por dónde salió el recibo (correo, WhatsApp, compartido, impreso, descargado).</p>
+<div class="duo-shots">
+  <figure class="shot"><img src="img/shots/esc-recibo.jpg?v=dce679f18a" alt="Recibo de pago con los botones Compartir, Correo e Imprimir" loading="lazy" width="1600" height="1000"><figcaption>El recibo, listo para compartir, enviar o imprimir.</figcaption></figure>
+  <figure class="shot movil"><img src="img/shots/cel-recibo.jpg?v=89d00bf556" alt="Recibo en el celular" loading="lazy" width="780" height="1688"><figcaption>En el celular, Compartir abre las aplicaciones del teléfono.</figcaption></figure>
+</div>
+</div>
+
+<div class="pantalla" id="s-recibos">
+<h3>Recibos <small>solo Administración</small></h3>
+<p>El archivo de <b>todos</b> los recibos de un rango de fechas (por defecto, el mes actual), con búsqueda por número, alumno o a nombre de, filtro por método, el total vigente y páginas de 25. Desde aquí se abre cualquier recibo y se <b>anula</b> un pago con el ícono de la papelera (pide el motivo).</p>
+<figure class="shot"><img src="img/shots/esc-recibos.jpg?v=6602d66bad" alt="Archivo de recibos con búsqueda, rango de fechas, filtro por método y total vigente" loading="lazy" width="1600" height="1000"><figcaption>Archivo de recibos: búsqueda, fechas, métodos y total vigente.</figcaption></figure>
+</div>
+
+<div class="pantalla" id="s-progreso">
+<h3>Progreso <small>solo Administración</small></h3>
+<p>Las cifras de una <b>semana</b> o un <b>mes</b>, con flechas para ir a periodos anteriores: <b>Cobrado</b> (por método y comparado con el periodo anterior), <b>Clases dadas</b> (y reagendadas, canceladas con y sin descuento, no se presentó), <b>Alumnos nuevos</b> por plan, <b>Pendiente de cobrar</b> (vencido y por vencer, a hoy), <b>Alumnos activos</b> y <b>Horas por instructor</b>. El cálculo está en <a href="#calculos">Lo que MyWeek calcula solo</a>.</p>
+<figure class="shot"><img src="img/shots/esc-progreso.jpg?v=972b3afa41" alt="Progreso de la semana con cobrado, clases dadas, alumnos nuevos, pendiente, activos y horas por instructor" loading="lazy" width="1600" height="1000"><figcaption>Progreso de la semana.</figcaption></figure>
+</div>
+
+<div class="pantalla" id="s-catalogo">
+<h3>Planes, Instructores y Usuarios <small>solo Administración</small></h3>
+<p>Listas con un botón <b>Nuevo</b>; al tocar una fila se edita. Los planes y los instructores <b>no se borran</b>: se desactivan y su historia se conserva. Un plan inactivo ya no se puede vender; un instructor inactivo ya no aparece al agendar. En Usuarios se ve el nivel y el último acceso de cada persona; un usuario desactivado ya no puede entrar y siempre debe quedar al menos un administrador activo.</p>
+<div class="duo-shots tres">
+  <figure class="shot"><img src="img/shots/esc-planes.jpg?v=bc8b84cd9a" alt="Lista de planes con clases, horas y precio" loading="lazy" width="1600" height="1000"><figcaption>Planes.</figcaption></figure>
+  <figure class="shot"><img src="img/shots/esc-instructores.jpg?v=0475806fd5" alt="Lista de instructores activos" loading="lazy" width="1600" height="1000"><figcaption>Instructores.</figcaption></figure>
+  <figure class="shot"><img src="img/shots/esc-usuarios.jpg?v=fe7df3ee01" alt="Lista de usuarios con su nivel" loading="lazy" width="1600" height="1000"><figcaption>Usuarios.</figcaption></figure>
+</div>
+</div>
+
+<div class="pantalla" id="s-config">
+<h3>Configuración <small>solo Administración</small></h3>
+<p>Cuatro bloques: <b>La escuela</b> (aparece en los recibos), <b>Correo del recibo</b>, <b>Horario de atención</b> y <b>Avisos</b>. Los cambios valen al instante para todos. Cada campo está en <a href="#f-config">la tabla de Configuración</a>.</p>
+<figure class="shot"><img src="img/shots/esc-configuracion.jpg?v=4f306b1b64" alt="Configuración de la escuela, correo del recibo, horario y avisos" loading="lazy" width="1600" height="1000"><figcaption>Configuración.</figcaption></figure>
+</div>
+</section>
+
+<!-- ════════════ 6 ════════════ -->
+<section id="formularios">
+<h2><span>6</span>Formularios, campo por campo</h2>
+<p>Los tipos y límites de estas tablas salen de las mismas reglas con las que MyWeek revisa cada dato antes de guardarlo. Si algo no cumple, MyWeek no guarda y explica qué corregir.</p>
+
+<div class="form" id="f-venta">
+<h3>Nuevo alumno / venta <small>Administración y Recepción</small></h3>
+<p>Botón <b>+ → Nuevo alumno / venta</b>, o <b>Alumnos → Nuevo</b>; desde la ficha, <b>Nueva venta</b> salta el paso del alumno. Son 5 pasos: Alumno, Plan, Ajustes, Pago y Resumen. Al ir atrás no se pierde lo escrito. Al guardar puede <b>agendar las clases</b> o <b>registrar el primer pago</b> de una vez.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Paso</th><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td class="sec">Alumno</td><td><b>Nombre completo</b></td><td>Nombre y apellidos del alumno, como quiere verlos en la agenda y en los recibos.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec"></td><td><b>Teléfono</b></td><td>Celular del alumno (normalmente 8 dígitos). Con él se le escribe por WhatsApp y MyWeek avisa si ya existe otro alumno con el mismo número.</td><td>Números (se aceptan espacios, +, guiones, puntos y paréntesis), de 6 a 30 caracteres</td><td class="c">No</td></tr><tr><td class="sec"></td><td><b>Correo</b></td><td>Correo del alumno, para enviarle los recibos.</td><td>Correo electrónico (nombre@dominio), hasta 254 caracteres</td><td class="c">No</td></tr><tr><td class="sec">Plan</td><td><b>Plan</b></td><td>El plan que compra. Solo aparecen los planes activos.</td><td>Uno de los planes activos</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec">Ajustes</td><td><b>Clases</b></td><td>Viene del plan. Cámbielo solo si acordó otra cantidad con el alumno.</td><td>Número entero de 1 a 200</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec"></td><td><b>Horas</b></td><td>Horas de manejo incluidas. Viene del plan.</td><td>Mayor que 0 y hasta 500; admite decimales (1.5 = hora y media)</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec"></td><td><b>Precio (Q)</b></td><td>Precio acordado. Si es distinto al del plan, MyWeek muestra el descuento o el aumento.</td><td>En quetzales: mayor que Q 0.00 y hasta Q 1,000,000,000.00</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec"></td><td><b>Recibo a nombre de</b></td><td>Quién paga: el alumno, su mamá, su papá o la empresa. Sale en cada recibo de esta venta.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec">Pago</td><td><b>Al contado / En cuotas</b></td><td>Al contado: una sola cuota que vence hoy. En cuotas: usted define cuántas y cuándo vence cada una.</td><td>Uno de: Contado, Cuotas</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec">Pago (en cuotas)</td><td><b>Número de cuotas</b></td><td>En cuántas partes se paga el precio.</td><td>De 1 a 24 cuotas</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec"></td><td><b>Primera cuota</b></td><td>Fecha en que vence la primera. Las demás vencen el mismo día de los meses siguientes.</td><td>Fecha</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec"></td><td><b>Fecha y monto de cada cuota</b></td><td>Puede cambiar cualquier fecha o monto. La suma debe ser exactamente el precio: MyWeek le dice cuánto falta o sobra.</td><td>Fecha y monto mayor que Q 0.00; la suma, igual al precio</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td class="sec">Resumen</td><td><b>Nota</b></td><td>Cualquier acuerdo con el alumno: horario preferido, descuento, quién lo recomendó.</td><td>Texto, hasta 500 caracteres</td><td class="c">No</td></tr></tbody></table></div>
+<div class="duo-shots">
+  <figure class="shot"><img src="img/shots/esc-venta-cuotas.jpg?v=8eefa581bd" alt="Paso de pago en cuotas de una nueva venta con la suma que cuadra con el precio" loading="lazy" width="1600" height="1000"><figcaption>Pago en cuotas: MyWeek reparte el precio y avisa si la suma no cuadra.</figcaption></figure>
+  <figure class="shot movil"><img src="img/shots/cel-venta-cuotas.jpg?v=a801efd2ca" alt="Venta en cuotas en el celular" loading="lazy" width="780" height="1688"><figcaption>Lo mismo en el celular, a pantalla completa.</figcaption></figure>
+</div>
+</div>
+
+<div class="form" id="f-alumno">
+<h3>Datos del alumno <small>Administración y Recepción</small></h3>
+<p>Ficha del alumno → <b>Editar datos</b>.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Nombre</b></td><td>Nombre y apellidos del alumno.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Teléfono</b></td><td>Celular del alumno. No puede repetirse con el de otro alumno.</td><td>Números (se aceptan espacios, +, guiones, puntos y paréntesis), de 6 a 30 caracteres</td><td class="c">No</td></tr><tr><td><b>Correo</b></td><td>Correo para los recibos.</td><td>Correo electrónico (nombre@dominio), hasta 254 caracteres</td><td class="c">No</td></tr><tr><td><b>Nota</b></td><td>Lo que conviene recordar del alumno (aparece en su ficha).</td><td>Texto, hasta 500 caracteres</td><td class="c">No</td></tr></tbody></table></div>
+</div>
+
+<div class="form" id="f-editar-venta">
+<h3>Editar venta <small>Administración y Recepción</small></h3>
+<p>Ficha del alumno → <b>Editar venta</b>. Si la venta ya tiene pagos, el precio y las cuotas quedan fijos (para cambiarlos, Administración anula primero esos pagos).</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Clases</b></td><td>Total de clases de la venta. No puede quedar por debajo de las ya dadas, descontadas o agendadas.</td><td>Número entero de 1 a 200</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Horas</b></td><td>Total de horas. No puede quedar por debajo de las ya usadas.</td><td>Mayor que 0 y hasta 500; admite decimales (1.5 = hora y media)</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Precio (Q)</b></td><td>Precio acordado. Si la venta ya tiene pagos, no se puede cambiar.</td><td>En quetzales: mayor que Q 0.00 y hasta Q 1,000,000,000.00</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Recibo a nombre de</b></td><td>Quién paga. Sale en los recibos siguientes.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Nota</b></td><td>Acuerdos con el alumno.</td><td>Texto, hasta 500 caracteres</td><td class="c">No</td></tr><tr><td><b>Cuotas</b></td><td>Las mismas reglas que al vender. Si la venta ya tiene pagos, las cuotas no se pueden cambiar.</td><td>Fecha y monto; la suma, igual al precio</td><td class="c"><span class="pill req">Sí</span></td></tr></tbody></table></div>
+</div>
+
+<div class="form" id="f-cita">
+<h3>Nueva cita <small>Administración y Recepción</small></h3>
+<p>Botón <b>+ → Nueva cita</b>, <b>Agenda → Nueva cita</b> o <b>Agendar</b> en la ficha. La <b>vista previa</b> muestra cada fecha con <span class="chip verde">OK</span> o <span class="chip rojo">Choque</span> antes de guardar, y el botón dice cuántas clases se van a guardar.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Buscar alumno</b></td><td>Escriba parte del nombre o del teléfono y toque al alumno. Junto a cada uno se ve cuántas clases le quedan por agendar.</td><td>Un alumno registrado</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Paquete</b></td><td>La venta de la que salen las clases. Solo aparecen las que tienen clases por agendar.</td><td>Una venta no anulada con clases libres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Instructor</b></td><td>Quién da las clases. Solo aparecen los instructores activos.</td><td>Un instructor activo</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Hora</b></td><td>Hora de inicio. Se elige cada 15 minutos dentro del horario de la escuela.</td><td>Hora (HH:MM) dentro del horario de atención; la clase completa debe terminar antes del cierre</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Duración</b></td><td>Cuánto dura cada clase. MyWeek propone las horas del plan entre sus clases (por ejemplo, 12 horas en 8 clases = 1 h 30 min).</td><td>Minutos enteros, de 15 a 600. En la pantalla se elige de 15 en 15 minutos, hasta 5 horas</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Repetir</b></td><td>Seguidas: un día tras otro, saltando los días sin atención. Un día por semana: la misma hora cada 7 días. Fechas sueltas: usted toca los días en un calendario.</td><td>Seguidas, un día por semana o fechas sueltas</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Primera clase</b></td><td>Fecha de la primera clase (seguidas o un día por semana).</td><td>Fecha de hoy en adelante, en un día de atención</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Cuántas clases</b></td><td>Cuántas clases agendar de una vez. No puede pasar de las que le quedan al paquete.</td><td>Número entero de 1 a 200</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Nota</b></td><td>Punto de encuentro, ruta o lo que deba saber el instructor. Se guarda en cada clase agendada.</td><td>Texto, hasta 500 caracteres</td><td class="c">No</td></tr></tbody></table></div>
+<figure class="shot"><img src="img/shots/esc-nueva-cita.jpg?v=53d1a52da7" alt="Formulario de nueva cita con paquete, instructor, horario, repetición y vista previa" loading="lazy" width="1600" height="1000"><figcaption>Nueva cita: paquete, instructor, horario, repetición y vista previa.</figcaption></figure>
+</div>
+
+<div class="form" id="f-reagendar">
+<h3>Reagendar una clase <small>Administración y Recepción</small></h3>
+<p>Detalle de la clase → <b>Reagendar</b>. Si faltan menos de 24 horas, antes se elige qué hacer (vea <a href="#r-24h">la regla de 24 horas</a>). Debajo aparece «Horario libre» o el choque que hay que resolver.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Nueva fecha</b></td><td>El día al que se mueve la clase.</td><td>Fecha de hoy en adelante, en un día de atención</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Hora</b></td><td>Nueva hora de inicio.</td><td>Hora (HH:MM) dentro del horario de atención; la clase completa debe terminar antes del cierre</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Instructor</b></td><td>Puede cambiar de instructor al reagendar.</td><td>Un instructor activo</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Duración</b></td><td>Duración de la clase; viene la que tenía.</td><td>Minutos enteros, de 15 a 600. En la pantalla se elige de 15 en 15 minutos, hasta 5 horas</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Motivo</b></td><td>Por qué se mueve (queda en el historial de la clase).</td><td>Texto, hasta 300 caracteres</td><td class="c">No</td></tr></tbody></table></div>
+</div>
+
+<div class="form" id="f-pago">
+<h3>Registrar pago <small>Administración y Recepción</small></h3>
+<p>Botón <b>+ → Registrar pago</b>, <b>Cobros</b> (tocando una cuota) o <b>Registrar pago</b> en la ficha. Al guardar se abre el recibo. La fecha del pago es la del día en que se registra.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>¿Quién paga?</b></td><td>Busque al alumno por su nombre. Solo aparecen ventas con cuotas pendientes.</td><td>Una venta no anulada con saldo</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Cuota a pagar</b></td><td>La cuota que se abona. MyWeek propone la más antigua pendiente y marca las vencidas.</td><td>Una cuota de esa venta</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Monto (Q)</b></td><td>Lo que entrega el alumno. Viene lo que falta de la cuota; puede escribir menos para un abono.</td><td>Mayor que Q 0.00 y no más de lo que falta de la cuota; hasta 2 decimales</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Método de pago</b></td><td>Cómo pagó.</td><td>Uno de: Efectivo, Tarjeta, Transferencia, Depósito</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Referencia</b></td><td>Número de boleta, de autorización o de transferencia. No aparece si el pago es en efectivo.</td><td>Texto, hasta 100 caracteres</td><td class="c">No</td></tr><tr><td><b>Recibo a nombre de</b></td><td>Viene el de la venta; cámbielo si esta vez paga otra persona.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr></tbody></table></div>
+<figure class="shot"><img src="img/shots/esc-registrar-pago.jpg?v=4aabac16b8" alt="Registrar pago con la cuota, el monto, el método y a nombre de" loading="lazy" width="1600" height="1000"><figcaption>Registrar pago: cuota, monto, método y a nombre de quién va el recibo.</figcaption></figure>
+</div>
+
+<div class="form" id="f-plan">
+<h3>Plan <small>solo Administración</small></h3>
+<p>Planes → <b>Nuevo plan</b> o tocar un plan.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Nombre</b></td><td>Cómo se llama el plan (Básico, Licencia completa…). No puede repetirse.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Citas</b></td><td>Cuántas clases incluye.</td><td>Número entero de 1 a 200</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Horas</b></td><td>Horas de manejo en total.</td><td>Mayor que 0 y hasta 500 (admite decimales)</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Precio (Q)</b></td><td>Precio de lista. Al vender se puede ajustar.</td><td>De Q 0.00 a Q 1,000,000,000.00</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Plan activo</b></td><td>Desmárquelo cuando ya no se venda. Las ventas hechas no cambian.</td><td>Sí o no</td><td class="c">No</td></tr></tbody></table></div>
+</div>
+
+<div class="form" id="f-instructor">
+<h3>Instructor <small>solo Administración</small></h3>
+<p>Instructores → <b>Nuevo instructor</b> o tocar un instructor.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Nombre</b></td><td>Nombre del instructor, como aparecerá en la agenda.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Teléfono</b></td><td>Celular del instructor (opcional).</td><td>Números (se aceptan espacios, +, guiones, puntos y paréntesis), de 6 a 30 caracteres</td><td class="c">No</td></tr><tr><td><b>Instructor activo</b></td><td>Desmárquelo si deja la escuela: ya no aparece al agendar y su historial se conserva.</td><td>Sí o no</td><td class="c">No</td></tr></tbody></table></div>
+</div>
+
+<div class="form" id="f-usuario">
+<h3>Usuario <small>solo Administración</small></h3>
+<p>Usuarios → <b>Nuevo usuario</b>; al tocar uno se edita su nombre, nivel y si está activo, y está el botón <b>Cambiar contraseña</b>.</p>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Qué escribir</th><th scope="col">Tipo y límites</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Correo</b></td><td>Con este correo entrará la persona. No puede repetirse.</td><td>Correo electrónico (nombre@dominio), hasta 254 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Nombre completo</b></td><td>Nombre de la persona; aparece en el menú y en lo que registra.</td><td>Texto, hasta 100 caracteres</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Nivel</b></td><td>Administrador o Recepción. Vea la matriz de permisos.</td><td>Uno de: Administrador, Recepción</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Contraseña</b></td><td>La contraseña inicial. El botón Generar crea una de 12 caracteres. Anótela y entréguela en privado: no se vuelve a mostrar.</td><td>De 8 a 64 caracteres, con al menos una letra y un número</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Usuario activo</b></td><td>Al editar: desmárquelo y la persona ya no puede entrar.</td><td>Sí o no; siempre debe quedar un administrador activo</td><td class="c">No</td></tr></tbody></table></div>
+</div>
+
+<div class="form" id="f-config">
+<h3>Configuración <small>solo Administración</small></h3>
+<div class="tabla-wrap"><table class="campos"><thead><tr><th scope="col">Campo</th><th scope="col">Para qué sirve</th><th scope="col">Tipo y límites</th><th scope="col">Si no lo cambia</th><th scope="col">¿Obligatorio?</th></tr></thead><tbody><tr><td><b>Nombre de la escuela</b></td><td>Nombre de su escuela. Sale en los recibos y en los correos.</td><td>Texto, hasta 100 caracteres</td><td>El nombre de la aplicación, hasta que usted ponga el suyo</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Teléfono</b></td><td>Teléfono que sale al pie de cada recibo.</td><td>Números (se aceptan espacios, +, guiones, puntos y paréntesis), de 6 a 30 caracteres</td><td>(vacío)</td><td class="c">No</td></tr><tr><td><b>Dirección</b></td><td>Dirección que sale al pie de cada recibo.</td><td>Texto, hasta 200 caracteres</td><td>(vacío)</td><td class="c">No</td></tr><tr><td><b>Logo (dirección https)</b></td><td>Dirección en internet (que empiece con https://) de la imagen de su logo. Sin logo, el recibo muestra el nombre.</td><td>Dirección que empieza con https://</td><td>(vacío)</td><td class="c">No</td></tr><tr><td><b>Nombre del remitente</b></td><td>Nombre que ve el alumno como remitente del correo del recibo.</td><td>Texto, hasta 100 caracteres</td><td>El nombre de la aplicación</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Correo de respuesta (opcional)</b></td><td>Si el alumno responde el correo del recibo, la respuesta llega aquí.</td><td>Correo electrónico</td><td>(vacío)</td><td class="c">No</td></tr><tr><td><b>Asunto</b></td><td>Asunto del correo. Puede usar {{nombre}}, {{numero}} y {{monto}}.</td><td>Texto, hasta 150 caracteres</td><td>Recibo {{numero}}</td><td class="c">No</td></tr><tr><td><b>Mensaje</b></td><td>Mensaje que acompaña al recibo. Las mismas palabras entre llaves se cambian por los datos del pago.</td><td>Texto, hasta 1000 caracteres</td><td>Hola {{nombre}}, adjuntamos tu recibo de pago. ¡Gracias!</td><td class="c">No</td></tr><tr><td><b>Abre</b></td><td>Hora en que abre la agenda: ninguna clase empieza antes.</td><td>Hora (HH:MM). La apertura debe ser antes del cierre</td><td>06:00</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Cierra</b></td><td>Hora en que cierra: ninguna clase termina después.</td><td>Hora (HH:MM). La apertura debe ser antes del cierre</td><td>20:00</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Días de atención</b></td><td>Días en que se pueden agendar clases.</td><td>Uno o más días de la semana, de domingo a sábado</td><td>Lunes a sábado</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Días para avisar que una cuota está por vencer</b></td><td>Con cuántos días de anticipación avisa MyWeek que una cuota está por vencer.</td><td>Número entero de 0 a 9999</td><td>7</td><td class="c"><span class="pill req">Sí</span></td></tr><tr><td><b>Avisar cuando a un alumno le queden estas clases o menos</b></td><td>Avisa cuando a un alumno le quedan entre 1 y estas clases (por agendar o agendadas).</td><td>Número entero de 0 a 9999</td><td>2</td><td class="c"><span class="pill req">Sí</span></td></tr></tbody></table></div>
+</div>
+
+<div class="form" id="f-motivos">
+<h3>Motivos</h3>
+<p>Al <b>anular una venta</b> o <b>anular un recibo</b>, el motivo es <b>obligatorio</b> (hasta 300 caracteres) y queda guardado con quién anuló. Al <b>reagendar</b> o <b>cancelar</b> una clase el motivo es opcional (hasta 300 caracteres) y queda en el historial de la clase.</p>
+</div>
+</section>
+
+<!-- ════════════ 7 ════════════ -->
+<section id="calculos">
+<h2><span>7</span>Lo que MyWeek calcula solo</h2>
+<p>Usted no hace ninguna suma. Estos ejemplos los calculó MyWeek con sus propias reglas al armar este manual.</p>
+
+<h3>Cuotas por defecto</h3>
+<p>Al elegir «En cuotas», MyWeek reparte el precio en partes iguales, una por mes, desde la primera fecha. Los centavos que sobran van en la última cuota. Usted puede cambiar después cualquier fecha o monto.</p>
+<div class="tabla-wrap"><table class="ej num"><thead><tr><th scope="col">Cuota</th><th scope="col">Vence</th><th scope="col">Monto</th></tr></thead><tbody><tr><td>1</td><td>31 de enero de 2026</td><td><b>Q 333.33</b></td></tr><tr><td>2</td><td>28 de febrero de 2026</td><td><b>Q 333.33</b></td></tr><tr><td>3</td><td>31 de marzo de 2026</td><td><b>Q 333.34</b></td></tr></tbody></table></div><p class="ej-nota">Q 1,000.00 entre 3 da Q 333.33 por cuota; la última lleva los centavos que faltan (Q 333.34) para que la suma sea exactamente Q 1,000.00. Como febrero no tiene 31, la segunda vence el último día del mes.</p>
+
+<h3>Saldo y estado de la venta</h3>
+<p><b>Pagado</b> = suma de los pagos vigentes (los anulados no cuentan). <b>Saldo</b> = precio − pagado. El <b>estado</b> lo decide la cuota pendiente más antigua:</p>
+<ul class="notas">
+  <li><span class="chip verde">Pagado</span> no falta nada.</li>
+  <li><span class="chip rojo">Vencido</span> alguna cuota pendiente ya pasó su fecha.</li>
+  <li><span class="chip ambar">Por vencer</span> la próxima vence dentro de 7 días o menos (se ajusta en Configuración).</li>
+  <li><span class="chip azul">Al día</span> la próxima vence más adelante.</li>
+</ul>
+<p>Venta de Q 1,650.00 en 3 cuotas: Q 550.00 el 1 de octubre de 2026; Q 550.00 el 1 de noviembre de 2026; Q 550.00 el 1 de diciembre de 2026. Aviso de cuotas por vencer: 7 días.</p><div class="tabla-wrap"><table class="ej"><thead><tr><th scope="col">Hoy</th><th scope="col">Pagos (vigentes)</th><th scope="col">Pagado</th><th scope="col">Saldo</th><th scope="col">Estado</th><th scope="col">Por qué</th></tr></thead><tbody><tr><td>mar 20 oct</td><td>cuota 1: Q 550.00</td><td>Q 550.00</td><td><b>Q 1,100.00</b></td><td><span class="chip azul">Al día</span></td><td>La próxima cuota (2) vence en 12 días: más de 7.</td></tr><tr><td>lun 26 oct</td><td>cuota 1: Q 550.00</td><td>Q 550.00</td><td><b>Q 1,100.00</b></td><td><span class="chip ambar">Por vencer</span></td><td>La próxima cuota (2) vence en 6 días: 7 o menos.</td></tr><tr><td>mié 4 nov</td><td>cuota 1: Q 550.00</td><td>Q 550.00</td><td><b>Q 1,100.00</b></td><td><span class="chip rojo">Vencido</span></td><td>La cuota 2 venció hace 3 días; de ella falta Q 550.00.</td></tr><tr><td>mié 4 nov</td><td>cuota 1: Q 550.00<br>cuota 2: Q 200.00</td><td>Q 750.00</td><td><b>Q 900.00</b></td><td><span class="chip rojo">Vencido</span></td><td>La cuota 2 venció hace 3 días; de ella falta Q 350.00.</td></tr><tr><td>mié 4 nov</td><td>cuota 1: Q 550.00<br>cuota 2: Q 550.00<br>cuota 3: Q 550.00</td><td>Q 1,650.00</td><td><b>Q 0.00</b></td><td><span class="chip verde">Pagado</span></td><td>No falta nada por pagar.</td></tr><tr><td>mié 4 nov</td><td>cuota 1: Q 550.00<br>cuota 2: Q 550.00 <i>(anulado, no cuenta)</i></td><td>Q 550.00</td><td><b>Q 1,100.00</b></td><td><span class="chip rojo">Vencido</span></td><td>La cuota 2 venció hace 3 días; de ella falta Q 550.00.</td></tr></tbody></table></div>
+
+<h3>Avance: clases y horas restantes</h3>
+<p>Una clase <b>usa</b> el paquete si se dio, o si se canceló o el alumno no llegó y se decidió <b>descontarla</b>. Las <b>programadas</b> quedan apartadas. Las <b>horas usadas</b> son la duración de las clases usadas.</p>
+<p>Venta de 10 clases y 15 horas; cada clase dura 90 minutos.</p><div class="tabla-wrap"><table class="ej"><thead><tr><th scope="col">Clases</th><th scope="col">Estado</th><th scope="col">¿Gasta una clase del paquete?</th></tr></thead><tbody><tr><td>4</td><td>Dada</td><td>Sí, se descuenta</td></tr><tr><td>1</td><td>Cancelada (cancelada con menos de 24 horas, se decidió descontar)</td><td>Sí, se descuenta</td></tr><tr><td>1</td><td>Cancelada (cancelada con tiempo)</td><td>No</td></tr><tr><td>1</td><td>No se presentó (se decidió no descontar)</td><td>No</td></tr><tr><td>2</td><td>Programada</td><td>Está apartada (agendada)</td></tr></tbody></table></div><div class="tabla-wrap"><table class="ej num"><thead><tr><th scope="col">Resultado</th><th scope="col">Cálculo</th><th scope="col">Valor</th></tr></thead><tbody><tr><td>Clases usadas</td><td>dadas + descontadas</td><td><b>5</b></td></tr><tr><td>Clases agendadas</td><td>programadas</td><td><b>2</b></td></tr><tr><td>Quedan por agendar</td><td>10 − 5 − 2</td><td><b>3</b></td></tr><tr><td>Horas usadas</td><td>5 × 90 min</td><td><b>7.5 horas</b></td></tr><tr><td>Horas restantes</td><td>15 − 7.5</td><td><b>7.5 horas</b></td></tr></tbody></table></div>
+
+<h3>Progreso</h3>
+<p>Cada vez que abre Progreso, MyWeek lo calcula de nuevo con lo que hay en ese momento. «Pendiente de cobrar» y «Alumnos activos» son la situación de hoy, no la del periodo.</p>
+<p>Semana del domingo 18 al sábado 24 de octubre de 2026. Pagos: Q 800.00 en efectivo, Q 600.00 con tarjeta, Q 1,200.00 por transferencia y uno de Q 300.00 que después se anuló; la semana anterior se cobraron Q 2,000.00. Clases: Carlos dio 3 de 60 minutos, Lucía 2 de 90 y Rosa 1 de 60; hubo una cancelada con descuento, una sin descuento, un alumno que no se presentó y dos reagendadas. Se vendieron un Básico y un Intermedio, y un tercer plan que se anuló.</p><div class="tabla-wrap"><table class="ej"><thead><tr><th scope="col">Lo que muestra Progreso</th><th scope="col">Valor</th><th scope="col">Cómo sale</th></tr></thead><tbody><tr><td>Cobrado</td><td><b>Q 2,600.00</b></td><td>Suma de pagos vigentes con fecha de pago en la semana; el anulado no cuenta. Por método: Efectivo Q 800.00, Tarjeta Q 600.00, Transferencia Q 1,200.00.</td></tr><tr><td>Frente a la semana anterior</td><td><b>+30 %</b></td><td>(Q 2,600.00 − Q 2,000.00) ÷ Q 2,000.00, redondeado.</td></tr><tr><td>Clases dadas</td><td><b>6</b></td><td>Reagendadas 2 · canceladas con descuento 1 · sin descuento 1 · no se presentó 1.</td></tr><tr><td>Alumnos nuevos</td><td><b>2</b></td><td>Ventas no anuladas con fecha en la semana: Básico 1, Intermedio 1.</td></tr><tr><td>Horas por instructor</td><td><b>Carlos 3 h</b><br><b>Lucía 3 h</b><br><b>Rosa 1 h</b></td><td>Minutos de las clases dadas ÷ 60, de mayor a menor.</td></tr></tbody></table></div>
+
+<h3>Número de recibo</h3>
+<p>Cada pago recibe el siguiente número del año: <b>R-año-0001</b>, R-año-0002… Los anulados también cuentan, así que un número nunca se repite. Con el año nuevo, vuelve a empezar en 0001.</p>
+<div class="tabla-wrap"><table class="ej"><thead><tr><th scope="col">Último recibo del año</th><th scope="col">Siguiente número</th></tr></thead><tbody><tr><td>R-2026-0041 y R-2026-0042 (anulado)</td><td><b>R-2026-0043</b></td></tr><tr><td>Ninguno en 2027 todavía</td><td><b>R-2027-0001</b></td></tr><tr><td>R-2026-9999</td><td><b>R-2026-10000</b></td></tr></tbody></table></div>
+
+<h3>Avisos</h3>
+<ul class="notas">
+  <li><b>Cuota por vencer:</b> la próxima cuota vence entre hoy y 7 días. Ejemplo: una cuota que vence el 3 de noviembre de 2026 empieza a avisar el 27 de octubre de 2026.</li>
+  <li><b>Cuota vencida:</b> desde el día siguiente a su vencimiento, con los días de atraso.</li>
+  <li><b>Pocas clases:</b> al alumno le quedan entre 1 y 2 clases entre las por agendar y las agendadas (se ajusta en Configuración).</li>
+  <li><b>Sin confirmar:</b> una clase programada cuya hora ya pasó y nadie marcó como dada o no presentada.</li>
+  <li><b>Empieza pronto:</b> una clase de hoy que empieza en 60 minutos o menos.</li>
+</ul>
+</section>
+
+<!-- ════════════ 8 ════════════ -->
+<section id="reglas">
+<h2><span>8</span>Reglas que conviene conocer</h2>
+
+<h3 id="r-24h">La regla de 24 horas</h3>
+<p>Si un alumno pide <b>reagendar</b> una clase cuando faltan <b>menos de 24 horas</b>, MyWeek no deja moverla sin una decisión:</p>
+<ul class="notas">
+  <li><b>Reagendar sin descontar:</b> la clase se mueve y no gasta su paquete.</li>
+  <li><b>Cancelar y descontar la clase:</b> la clase se pierde y cuenta como usada. Después puede agendar otra.</li>
+</ul>
+<p>Al <b>cancelar</b> con menos de 24 horas, se elige entre <b>cancelar y descontar</b> o <b>cancelar sin descontar</b>. Con más tiempo, reagendar o cancelar <b>nunca</b> descuenta.</p>
+<p>Hoy es 29 de octubre de 2026, 11:00. Un alumno pide mover su clase:</p><div class="tabla-wrap"><table class="ej"><thead><tr><th scope="col">Clase</th><th scope="col">Faltan</th><th scope="col">Qué pasa al reagendar</th></tr></thead><tbody><tr><td>vie 30 oct · 12:00</td><td>25 horas</td><td>Se reagenda libremente; nunca se descuenta</td></tr><tr><td>vie 30 oct · 10:00</td><td>23 horas</td><td><b>Hay que decidir</b>: reagendar sin descontar, o cancelar y descontar la clase</td></tr><tr><td>jue 29 oct · 15:00</td><td>4 horas</td><td><b>Hay que decidir</b>: reagendar sin descontar, o cancelar y descontar la clase</td></tr></tbody></table></div>
+<figure class="shot"><img src="img/shots/esc-decision-24h.jpg?v=0b300c12a2" alt="Aviso de menos de 24 horas con los botones Reagendar sin descontar y Cancelar y descontar la clase" loading="lazy" width="1600" height="1000"><figcaption>La decisión de 24 horas: queda en el historial de la clase con quién la tomó.</figcaption></figure>
+
+<h3>Clases</h3>
+<ul class="reglas">
+  <li>Solo se agenda en <b>días de atención</b> y dentro del <b>horario</b> (por defecto lunes a sábado, de 06:00 a 20:00); la clase entera debe caber antes del cierre y no puede pasar de la medianoche.</li>
+  <li>No se agenda en fechas u horas que ya pasaron.</li>
+  <li><b>Choques:</b> un instructor no puede tener dos clases a la vez, ni un alumno tampoco. MyWeek dice con quién choca.</li>
+  <li>No se agendan más clases de las que le quedan al paquete.</li>
+  <li>La duración va de 15 a 600 minutos; en la pantalla se elige de 15 en 15, hasta 5 horas.</li>
+  <li>Una clase se marca <b>Dada</b> o <b>No se presentó</b> solo cuando ya empezó. Dada siempre descuenta; en «No se presentó» se decide si se descuenta.</li>
+  <li>Solo se reagenda, cancela o marca una clase <b>programada</b>. Cada movimiento queda en su historial y no se borra.</li>
+</ul>
+
+<h3>Ventas, cuotas y pagos</h3>
+<ul class="reglas">
+  <li>De 1 a 24 cuotas, cada una mayor que Q 0.00, y la <b>suma debe ser exactamente el precio</b>.</li>
+  <li>Las cuotas y el precio de una venta solo se cambian <b>mientras no tenga pagos</b>.</li>
+  <li>Las clases y horas de una venta no pueden quedar por debajo de lo ya usado o agendado.</li>
+  <li>Un pago no puede ser mayor que lo que falta de su cuota. Se pueden hacer abonos parciales.</li>
+  <li>Formas de pago: Efectivo, Tarjeta, Transferencia y Depósito. La referencia es para las que no son en efectivo.</li>
+  <li>Dos alumnos no pueden tener el mismo teléfono (MyWeek ofrece abrir el existente o venderle un plan).</li>
+  <li>Dos planes no pueden llamarse igual.</li>
+</ul>
+
+<h3>Anulaciones</h3>
+<ul class="reglas">
+  <li>Solo <b>Administración</b> anula, y siempre con <b>motivo</b>.</li>
+  <li><b>Anular una venta:</b> sus clases programadas se cancelan <b>sin descontar</b> y deja de contar para cobros y avisos. No se puede deshacer.</li>
+  <li><b>Anular un recibo:</b> la cuota vuelve a quedar pendiente, el recibo queda marcado ANULADO y su número no se vuelve a usar. No se puede deshacer.</li>
+  <li>Nada se borra: lo anulado sigue a la vista con quién lo anuló y por qué.</li>
+</ul>
+
+<h3>Lo que Recepción no puede</h3>
+<ul class="reglas">
+  <li>Ver la agenda de semanas pasadas, ni los pagos registrados antes del domingo de esta semana.</li>
+  <li>Ver la caja del día, el archivo de recibos ni el progreso.</li>
+  <li>Anular ventas o recibos.</li>
+  <li>Cambiar planes, instructores, usuarios o la configuración.</li>
+</ul>
+</section>
+
+<!-- ════════════ 9 ════════════ -->
+<section id="flujos">
+<h2><span>9</span>Paso a paso, por perfil</h2>
+
+<div class="flujo">
+<h3>El día de Recepción</h3>
+<ol class="pasos">
+  <li>Entre y revise <b>Hoy</b>: las clases del día y la campana de avisos.</li>
+  <li>Cuando termina cada clase, tóquela y marque <b>Dada</b>. Si el alumno no llegó, <b>No se presentó</b> y decida si se descuenta.</li>
+  <li>Llega un alumno nuevo: <b>+ → Nuevo alumno / venta</b>, elija el plan, ajuste si hubo descuento, elija contado o cuotas y guarde. Toque <b>Agendar citas ahora</b>.</li>
+  <li>Agende: instructor, hora, duración y «Seguidas», «Un día por semana» o «Fechas sueltas». Revise la vista previa y guarde.</li>
+  <li>Llega a pagar: <b>+ → Registrar pago</b> (o desde <b>Cobros → Por cobrar</b>), revise la cuota y el monto, elija el método y guarde. <b>Compartir</b> el recibo por WhatsApp.</li>
+  <li>Un alumno pide mover su clase: ábrala, <b>Reagendar</b>. Si faltan menos de 24 horas, decida si se descuenta.</li>
+  <li>Al final del día, revise <b>Cobros → Por cobrar</b> y escriba a los alumnos con cuotas vencidas desde su ficha (botón WhatsApp).</li>
+</ol>
+</div>
+
+<div class="flujo">
+<h3>El trabajo de Administración</h3>
+<ol class="pasos">
+  <li>Al empezar: <b>Configuración</b> (nombre, teléfono, dirección y logo de la escuela, correo del recibo, horario, días y avisos), <b>Planes</b> e <b>Instructores</b>.</li>
+  <li>Cree a su equipo en <b>Usuarios</b> con su nivel y entregue la contraseña inicial en privado.</li>
+  <li>Cada día: la <b>caja del día</b> en Hoy y lo mismo que Recepción cuando haga falta.</li>
+  <li>Cada semana: <b>Progreso</b> (cobrado, clases, alumnos nuevos, horas por instructor) y el pendiente de cobrar.</li>
+  <li>Cuando hay un error en un cobro: <b>Recibos</b>, busque el número y anúlelo con el motivo; luego regístrelo bien.</li>
+  <li>Cuando alguien deja la escuela: desactívelo en <b>Usuarios</b> o <b>Instructores</b>. Su historial se conserva.</li>
+</ol>
+</div>
+
+<div class="flujo">
+<h3>Primer ingreso de una persona nueva</h3>
+<ol class="pasos">
+  <li>Administración la crea en <b>Usuarios → Nuevo usuario</b> con una contraseña inicial y se la entrega.</li>
+  <li>La persona entra con su correo y esa contraseña.</li>
+  <li>Si quiere una propia, usa «¿Olvidaste tu contraseña?» en la entrada y recibe el enlace en su correo.</li>
+</ol>
+</div>
+</section>
+
+<!-- ════════════ 10 ════════════ -->
+<section id="tablas">
+<h2><span>10</span>Dónde se guarda cada dato</h2>
+<p>MyWeek guarda la información de su escuela en <b>11 tablas</b>. Usted no las toca: cada pantalla escribe en la que corresponde. Además de las columnas de la lista, cada tabla lleva números internos que unen, por ejemplo, una clase con su venta y su alumno.</p>
+<div class="tabla-wrap"><table class="bd"><thead><tr><th scope="col">Tabla</th><th scope="col">Qué guarda</th><th scope="col">Quién la llena</th><th scope="col">Columnas</th></tr></thead><tbody><tr><td><b>Usuarios</b></td><td>Las personas que pueden entrar: correo, nombre, nivel (Administrador o Recepción), si está activa, quién la creó y su último acceso.</td><td>Administración, en Usuarios. El último acceso se anota solo al entrar.</td><td class="cols">Correo, nombre, nivel, activo, creado por, fecha de creación, último acceso. <span class="int">+ 1 columna interna</span></td></tr><tr><td><b>Instructores</b></td><td>Cada instructor con su teléfono y si está activo.</td><td>Administración, en Instructores.</td><td class="cols">Nombre, teléfono, activo, creado por, fecha de creación. <span class="int">+ 1 columna interna</span></td></tr><tr><td><b>Planes</b></td><td>El catálogo: nombre, clases, horas, precio y si se puede vender.</td><td>Administración, en Planes.</td><td class="cols">Nombre, clases, horas, precio, activo, modificado por, fecha de modificación. <span class="int">+ 1 columna interna</span></td></tr><tr><td><b>Alumnos</b></td><td>Cada alumno con su teléfono, correo y nota.</td><td>Administración y Recepción, al registrar un alumno o al editar sus datos.</td><td class="cols">Nombre, teléfono, correo, nota, creado por, fecha de creación, fecha de modificación. <span class="int">+ 1 columna interna</span></td></tr><tr><td><b>Ventas</b></td><td>Cada plan vendido: alumno, plan, clases, horas, precio acordado, precio de lista, a nombre de quién va el recibo, contado o cuotas, nota y si está anulada.</td><td>Administración y Recepción al vender o editar una venta; solo Administración la anula.</td><td class="cols">Nombre del plan, clases, horas, precio de lista del plan, precio, a nombre de, contado o cuotas, nota, anulada, creado por, fecha de la venta, fecha de creación. <span class="int">+ 3 columnas internas</span></td></tr><tr><td><b>Cuotas</b></td><td>Las cuotas de cada venta: número, fecha de vencimiento y monto. Una venta al contado tiene una sola cuota.</td><td>MyWeek, al guardar o editar una venta.</td><td class="cols">Número de cuota, vence, monto. <span class="int">+ 2 columnas internas</span></td></tr><tr><td><b>Clases</b></td><td>Cada clase: alumno, venta, instructor, fecha, hora, duración, estado (programada, dada, no se presentó, cancelada), si se descuenta y cuántas veces se reagendó.</td><td>Administración y Recepción, al agendar, reagendar, cancelar o marcar una clase. Al anular una venta, MyWeek cancela sus clases programadas.</td><td class="cols">Fecha de la clase, hora, duración en minutos, estado, se descuenta, veces reagendada, nota, creado por, fecha de creación, modificado por, fecha de modificación. <span class="int">+ 4 columnas internas</span></td></tr><tr><td><b>Historial de clases</b></td><td>Cada movimiento de cada clase: agendada, reagendada (de qué fecha a cuál), cancelada, dada o no se presentó, con quién lo hizo, cuándo, la decisión y el motivo.</td><td>MyWeek, automáticamente, con cada cambio de una clase. Solo se agregan filas.</td><td class="cols">Fecha y hora, usuario, acción, detalle. <span class="int">+ 1 columna interna</span></td></tr><tr><td><b>Pagos y recibos</b></td><td>Cada pago: número de recibo, cuota, fecha, monto, método, referencia, a nombre de, quién lo registró, si está anulado (por quién y por qué) y por dónde se entregó el recibo.</td><td>Administración y Recepción al registrar un pago o entregar el recibo; solo Administración lo anula.</td><td class="cols">Número de recibo, fecha de pago, monto, método, referencia, nota, a nombre de, registrado por, fecha y hora de registro, anulado, anulado por, motivo de la anulación, por dónde se entregó el recibo. <span class="int">+ 3 columnas internas</span></td></tr><tr><td><b>Configuración</b></td><td>Los ajustes de la escuela: nombre, teléfono, dirección, logo, correo del recibo, horario, días de atención y avisos.</td><td>Administración, en Configuración.</td><td class="cols">Ajuste, valor, descripción.</td></tr><tr><td><b>Bitácora de acciones</b></td><td>Cada acción importante (crear, cambiar, anular, enviar), con fecha, usuario, detalle y resultado. Nunca guarda contraseñas.</td><td>MyWeek, automáticamente.</td><td class="cols">Fecha y hora, usuario, acción, detalle, resultado.</td></tr></tbody></table></div>
+</section>
+
+<!-- ════════════ 11 ════════════ -->
+<section id="seguridad">
+<h2><span>11</span>Seguridad</h2>
+<ul class="reglas">
+  <li><b>Cada acción se revisa en el servidor:</b> quién es la persona, si su usuario está activo y si su nivel permite esa acción. Ocultar un botón no es la única barrera.</li>
+  <li><b>Contraseñas:</b> nunca se guardan en las tablas ni en la bitácora. Ni Administración puede verlas; solo puede poner una nueva.</li>
+  <li><b>Cuenta ligada a la persona:</b> si alguien vuelve a crear una cuenta con el mismo correo, no hereda el acceso.</li>
+  <li><b>Usuarios desactivados</b> no pueden entrar; siempre queda al menos un administrador activo.</li>
+  <li><b>Bitácora de acciones:</b> cada alta, cambio, anulación y envío queda anotado con fecha y usuario. Cuando pasa de 20,000 filas, se quitan las 5,000 más antiguas.</li>
+  <li><b>Historial de clases</b> y anulaciones: nada se borra; lo anulado queda a la vista con su motivo.</li>
+  <li><b>Límite de solicitudes:</b> hasta 120 por minuto por persona, y 20 correos de recibo por minuto. Frena abusos sin estorbar el trabajo normal.</li>
+  <li><b>Dos personas a la vez:</b> las escrituras se hacen una tras otra, así dos recepcionistas no pueden agendar la misma hora del mismo instructor ni repetir un número de recibo.</li>
+  <li><b>Las tablas solo las edita la cuenta propietaria</b> de la escuela; el personal trabaja solo a través de MyWeek.</li>
+  <li>Lo que se escribe en un campo se guarda siempre como texto, nunca como una instrucción.</li>
+</ul>
+</section>
+
+<!-- ════════════ 12 ════════════ -->
+<section id="preguntas">
+<h2><span>12</span>Preguntas frecuentes</h2>
+<dl class="faq">
+  <dt>Un alumno avisó hoy que no viene mañana. ¿Se le descuenta?</dt>
+  <dd>Si faltan menos de 24 horas, usted decide: reagendar sin descontar o cancelar y descontar. Con más tiempo, se reagenda o cancela sin descontar.</dd>
+  <dt>Me equivoqué en el monto de un pago.</dt>
+  <dd>Administración anula el recibo en <b>Recibos</b> (con el motivo) y luego se registra el pago correcto. La cuota vuelve a quedar pendiente al anular.</dd>
+  <dt>Le hicimos un descuento al alumno.</dt>
+  <dd>Al vender, en el paso Ajustes, cambie el precio: MyWeek muestra «Descuento de…» y lo deja en la venta y en el progreso. El plan no cambia.</dd>
+  <dt>¿Puedo cambiar las fechas de las cuotas después?</dt>
+  <dd>Sí, en <b>Editar venta</b>, mientras la venta no tenga pagos.</dd>
+  <dt>¿Por qué Recepción no ve los pagos de la semana pasada?</dt>
+  <dd>Por diseño: Recepción trabaja con la semana actual. El historial completo de pagos y recibos es de Administración.</dd>
+  <dt>¿Cómo cambio el horario o los días en que atendemos?</dt>
+  <dd>En <b>Configuración → Horario de atención</b>. Las clases ya agendadas no se mueven.</dd>
+  <dt>¿Dónde veo cuántas horas dio cada instructor?</dt>
+  <dd>En <b>Progreso → Horas por instructor</b>, por semana o por mes.</dd>
+  <dt>¿Se puede usar en el celular?</dt>
+  <dd>Sí, todo funciona en el celular: la barra de abajo, el botón + y los formularios a pantalla completa.</dd>
+  <dt>¿El recibo es una factura?</dt>
+  <dd>No. Es un comprobante interno de la escuela; así lo dice al pie.</dd>
+  <dt>Un instructor dejó la escuela.</dt>
+  <dd>En <b>Instructores</b>, desmarque «Instructor activo». Sus clases dadas y sus horas siguen en el historial.</dd>
+</dl>
+</section>
+
+<section class="m-final" id="cierre">
+  <h2>¿Lo vemos con sus planes e instructores?</h2>
+  <p>Cuéntenos cómo trabaja hoy su escuela y le mostramos MyWeek con sus propios datos. También puede <a href="index.html#demo">probar la demo</a> ahora mismo.</p>
+  <a class="btn big" data-wa href="https://wa.me/50258253416" target="_blank" rel="noopener">Escríbanos por WhatsApp</a>
+</section>
+
+</article>
+</div>
+</main>
+
+<footer class="ftr">
+  <div class="wrap ftr-in">
+    <a class="logo" href="index.html" aria-label="MyWeek, página principal"><img src="img/marca/myweek-logotipo-horizontal.svg?v=6f036f17ae" alt="MyWeek" width="374" height="64" loading="lazy"></a>
+    <a class="pixan" href="https://pixantech.net/" target="_blank" rel="noopener">
+      <img src="img/pixan-emblem-black.png?v=7fd80648c2" alt="" width="56" height="42" loading="lazy">
+      <span><small>Un producto de</small><b>Pixantech</b></span>
+    </a>
+    <p class="copy">© <span id="year">2026</span> Pixantech · Todos los derechos reservados.</p>
+  </div>
+</footer>
+<a class="wa-float" data-wa href="https://wa.me/50258253416" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.8 14.2c-.2.7-1.4 1.3-2 1.4-.5.1-1.2.1-1.9-.1a17 17 0 0 1-1.7-.6 13.4 13.4 0 0 1-5.1-4.5c-.4-.5-1.3-1.8-1.3-3.4s.8-2.4 1.2-2.7c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5l1 2.3c.1.2.1.4 0 .6l-.4.6-.5.5c-.2.2-.3.3-.1.6.2.3.8 1.4 1.8 2.2 1.2 1.1 2.2 1.4 2.5 1.6.3.1.5.1.7-.1l.9-1.1c.2-.3.4-.2.7-.1l2.2 1c.3.2.5.2.6.4.1.1.1.8-.2 1.6z"/></svg>
+</a>
+</body>
+</html>

@@ -1,0 +1,112 @@
+:root {
+  --demo-h: 48px;
+  --bg: #f3f5f1;
+  --bg-vidrio: rgba(243, 245, 241, .88);
+  --card: #ffffff;
+  --soft: #f1f5f2;
+  --ink: #14201c;
+  --muted: #5a6862;
+  --line: #dde3dd;
+  --input: #ffffff;
+  --accent: #1f6b53;
+  --accent-2: #2b8a6b;
+  --accent-soft: rgba(31, 107, 83, .12);
+  --violet: #164d3c;
+  --ok: #0f6b43;
+  --danger: #b8262c;
+  --accent-btn: #1f6b53;
+  --warn-ink: #8a5200;
+  --side: #163a2f;
+  --side-2: #0b1a15;
+  --side-ink: #bcd7ca;
+  --shadow: 0 1px 2px rgba(20, 32, 28, .05), 0 10px 28px -16px rgba(20, 32, 28, .28);
+  --shadow-up: 0 -8px 30px -14px rgba(11, 15, 13, .5);
+  --focus: 0 0 0 3px rgba(31, 107, 83, .45);
+}
+:root[data-theme="dark"] {
+  --bg: #0b0f0d; --bg-vidrio: rgba(11, 15, 13, .88); --card: #141a17; --soft: #19221e; --ink: #e6efe9; --muted: #a3b4ab;
+  --line: #26322c; --input: #0f1512; --accent: #8ad0b4; --accent-2: #9fd8bf; --ok: #5fd39b; --danger: #ff9ea2; --accent-btn: #2a8366; --accent-soft: rgba(159, 216, 191, .14); --violet: #1f6b53;
+  --side: #10241d; --side-2: #070b09; --side-ink: #a9cbbb;
+  --focus: 0 0 0 3px rgba(159, 216, 191, .5);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0f0d; --bg-vidrio: rgba(11, 15, 13, .88); --card: #141a17; --soft: #19221e; --ink: #e6efe9; --muted: #a3b4ab;
+    --line: #26322c; --input: #0f1512; --accent: #8ad0b4; --accent-2: #9fd8bf; --ok: #5fd39b; --danger: #ff9ea2; --accent-btn: #2a8366; --accent-soft: rgba(159, 216, 191, .14); --violet: #1f6b53;
+    --side: #10241d; --side-2: #070b09; --side-ink: #a9cbbb;
+    --focus: 0 0 0 3px rgba(159, 216, 191, .5);
+  }
+}
+:root[data-theme="dark"] .btn-enlace { color: #9fd8bf; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn-enlace { color: #9fd8bf; } }
+
+.boot { background: radial-gradient(120% 80% at 50% 0%, #1f4a3c 0%, #163a2f 45%, #0b0f0d 100%); }
+.boot-asfalto { fill: #0e1c17; }
+.boot-carro { fill: #2b8a6b; }
+.boot-vidrio { fill: #cdeadc; }
+.boot-textos { color: #bcd7ca; }
+.boot-barra i { background: #9fd8bf; }
+.btn-primario, .sb-nuevo, .bb-nuevo { box-shadow: 0 10px 22px -12px rgba(22, 77, 60, .9); }
+.btn-primario:hover { box-shadow: 0 14px 26px -12px rgba(22, 77, 60, 1); }
+.kpi-ic-azul { background: linear-gradient(135deg, #2b8a6b, #1f6b53); }
+.kpi-ic-violeta { background: linear-gradient(135deg, #2f7a8c, #1d5868); }
+.velo { background: rgba(8, 15, 12, .5); }
+.toast { background: #14201c; }
+.tip { background: #0b0f0d; }
+.vista-progreso { --viz-1: #1f6b53; }
+:root[data-theme="dark"] .vista-progreso { --viz-1: #4fae8b; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .vista-progreso { --viz-1: #4fae8b; } }
+
+.btn-primario, .sb-nuevo, .bb-nuevo { background: linear-gradient(135deg, var(--accent-btn), #164d3c); }
+.mini-d.on, .alerta-info .alerta-ic { background: var(--accent-btn); border-color: var(--accent-btn); }
+.btn-peligro, .alerta-peligro .alerta-ic, .btn-icono .contador { background: #b8262c; }
+.av { background: linear-gradient(135deg, #1f6b53, #164d3c); }
+.kpi-ic-gris { color: #fff; }
+
+.cita-cerrada, .blq-dada, .mes-dia.fuera, .al-anulada { opacity: 1; }
+.mes-dia.fuera .mes-n { color: var(--muted); }
+.cb-anulado .al-txt, .cb-anulado .cb-der b { opacity: 1; color: var(--muted); }
+
+body:not(.captura) { padding-top: var(--demo-h); }
+body:not(.captura) #app, body:not(.captura) .acceso { min-height: calc(100vh - var(--demo-h)); }
+body:not(.captura) #topbar { top: var(--demo-h); }
+body:not(.captura) .capa { top: var(--demo-h); }
+body:not(.captura) .modal { max-height: calc(100vh - var(--demo-h) - 32px); }
+@media (min-width: 768px) {
+  body:not(.captura) #sidebar { top: var(--demo-h); height: calc(100vh - var(--demo-h)); }
+}
+
+.demo-bar {
+  position: fixed; inset: 0 0 auto 0; height: var(--demo-h); z-index: 85;
+  display: flex; align-items: center; gap: 12px; padding: 0 16px;
+  background: #0b0f0d; color: #fff; border-bottom: 1px solid #1d2a24;
+  font: 600 13px/1.2 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+.demo-tag { flex: none; background: #9fd8bf; color: #0b0f0d; font-weight: 800; font-size: 11px; letter-spacing: .08em; padding: 4px 9px; border-radius: 999px; }
+.demo-txt { color: #d4e3db; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.demo-sp { flex: 1; }
+.demo-como { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.demo-como select {
+  font: inherit; font-weight: 700; color: #0b0f0d; background: #fff; min-height: 32px;
+  border: 1px solid rgba(255, 255, 255, .4); border-radius: 999px; padding: 4px 12px; cursor: pointer; max-width: 170px;
+}
+.demo-reset { flex: none; font: inherit; font-weight: 700; color: #fff; background: none; border: 0; cursor: pointer; padding: 7px 10px; border-radius: 999px; }
+.demo-reset:hover { background: rgba(255, 255, 255, .12); }
+.demo-cta { flex: none; color: #0b0f0d; background: #fff; text-decoration: none; font-weight: 800; padding: 8px 15px; border-radius: 999px; white-space: nowrap; }
+.demo-cta:hover { background: #e2ece6; }
+.demo-como select:focus-visible, .demo-cta:focus-visible, .demo-reset:focus-visible { outline: 2px solid #9fd8bf; outline-offset: 2px; box-shadow: none; }
+.demo-pista { margin-top: -8px; margin-bottom: 18px; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); color: var(--ink); font-size: .85rem; line-height: 1.45; }
+@media (max-width: 1100px) { .demo-txt-mas { display: none; } }
+@media (max-width: 760px) { .demo-txt { display: none; } }
+@media (max-width: 520px) {
+  .demo-como > span, .demo-reset-txt { display: none; }
+  .demo-bar { gap: 8px; padding: 0 10px; }
+  .demo-como select { max-width: 140px; padding: 4px 8px; }
+  .demo-cta { padding: 8px 12px; }
+}
+@media (max-width: 360px) { .demo-tag { display: none; } }
+
+body.captura .demo-bar { display: none; }
+body.captura *, body.captura *::before, body.captura *::after { animation: none !important; transition: none !important; caret-color: transparent; }
+body.captura ::-webkit-scrollbar { display: none; }
+html:has(body.captura), body.captura { scrollbar-width: none; }
