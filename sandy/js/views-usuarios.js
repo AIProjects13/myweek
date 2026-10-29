@@ -1,0 +1,140 @@
+'use strict';
+/* Usuarios (administrador): lista, nuevo usuario, editar (nombre, nivel, activo) y cambiar contraseña.
+ * La contraseña nunca se guarda en la página ni se escribe en consola: solo vive en el campo hasta guardar. */
+
+const Pw = {
+  LETRAS: 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz', DIGITOS: '23456789',
+  /** Entero al azar en [0, n) sin sesgo. */
+  azar(n) {
+    const lim = Math.floor(0x100000000 / n) * n, b = new Uint32Array(1);
+    do { crypto.getRandomValues(b); } while (b[0] >= lim);
+    return b[0] % n;
+  },
+  /** 12 caracteres, con al menos una letra y un número (regla del servidor: 8–64, letra y número). */
+  generar() {
+    const todo = Pw.LETRAS + Pw.DIGITOS, c = [Pw.LETRAS[Pw.azar(Pw.LETRAS.length)], Pw.DIGITOS[Pw.azar(Pw.DIGITOS.length)]];
+    while (c.length < 12) c.push(todo[Pw.azar(todo.length)]);
+    for (let i = c.length - 1; i > 0; i--) { const j = Pw.azar(i + 1); const t = c[i]; c[i] = c[j]; c[j] = t; }
+    return c.join('');
+  },
+  valida: (s) => s.length >= 8 && s.length <= 64 && /[A-Za-zÀ-ɏ]/.test(s) && /\d/.test(s),
+  MSG: 'La contraseña debe tener entre 8 y 64 caracteres, con al menos una letra y un número.',
+  /** Campo con botón mostrar/ocultar y botón Generar. */
+  campo(id) {
+    return '<div class="campo"><label for="' + id + '">Contraseña</label><div class="input-con-boton"><input id="' + id + '" class="input" type="password" autocomplete="new-password" spellcheck="false" maxlength="64">' +
+      '<button type="button" class="btn-icono btn-icono-plano" data-pw="ver" data-for="' + id + '" aria-label="Mostrar contraseña" aria-pressed="false">' + icon('eye', 20) + '</button></div>' +
+      '<div class="pw-fila"><button type="button" class="btn btn-suave" data-pw="gen" data-for="' + id + '">' + icon('key', 18) + 'Generar</button>' +
+      '<small class="ayuda">8 a 64 caracteres, con letra y número. Anótala para entregarla: no se vuelve a mostrar.</small></div></div>';
+  },
+};
+document.addEventListener('click', (e) => {
+  const b = e.target.closest ? e.target.closest('[data-pw]') : null;
+  if (!b) return;
+  const i = document.getElementById(b.dataset.for);
+  if (!i) return;
+  if (b.dataset.pw === 'gen') { i.value = Pw.generar(); i.type = 'text'; const v = i.parentNode.querySelector('[data-pw="ver"]'); v.innerHTML = icon('eyeoff', 20); v.setAttribute('aria-pressed', 'true'); v.setAttribute('aria-label', 'Ocultar contraseña'); }
+  else {
+    const ver = i.type === 'password';
+    i.type = ver ? 'text' : 'password';
+    b.innerHTML = icon(ver ? 'eyeoff' : 'eye', 20);
+    b.setAttribute('aria-pressed', String(ver));
+    b.setAttribute('aria-label', ver ? 'Ocultar contraseña' : 'Mostrar contraseña');
+  }
+});
+
+const Us = {
+  lista: null, err: '', cargando: false,
+
+  /** Último acceso (instante ISO del servidor) en hora de Guatemala (UTC−6). */
+  acceso(v) {
+    const ms = v ? new Date(v).getTime() : NaN;
+    if (isNaN(ms)) return 'Aún no ha entrado';
+    const d = new Date(ms - 6 * 36e5).toISOString();
+    return 'Último acceso ' + fechaCorta(d.slice(0, 10)) + ' ' + d.slice(11, 16);
+  },
+  cargar() {
+    if (Us.cargando) return;
+    Us.cargando = true; Us.err = '';
+    api('users.list').then((l) => { Us.lista = l; }).catch((e) => { Us.err = e.message || MENSAJES.INTERNAL; })
+      .then(() => { Us.cargando = false; if (S.ruta.nombre === 'usuarios') Router.render({ conservarScroll: true }); });
+  },
+  fila(u) {
+    return '<button type="button" class="cb-fila' + (u.activo ? '' : ' cb-anulado') + '" data-us="' + esc(u.email) + '"><span class="av" aria-hidden="true">' + esc(iniciales(u.nombre)) + '</span>' +
+      '<span class="al-txt"><b>' + esc(u.nombre) + '</b><small>' + esc(u.email) + ' · ' + esc(Us.acceso(u.ultimoAcceso)) + '</small></span>' +
+      '<span class="cb-der"><span class="chip ' + (u.nivel === 'Admin' ? 'chip-azul' : '') + '">' + esc(NIVEL_TXT[u.nivel] || u.nivel) + '</span>' + (u.activo ? '' : '<span class="chip chip-rojo">Inactivo</span>') + '</span></button>';
+  },
+  render(el) {
+    if (el.classList.contains('entra')) Us.lista = null;
+    if (!Us.lista && !Us.cargando && !Us.err) Us.cargar();
+    const barra = '<div class="cb-barra"><p class="ayuda adm-nota">Un usuario desactivado ya no puede entrar. Siempre debe quedar un administrador activo.</p>' +
+      '<button type="button" class="btn btn-primario" data-us="nuevo">' + icon('plus', 18) + '<span>Nuevo usuario</span></button></div>';
+    if (!Us.lista) {
+      el.innerHTML = barra + (Us.err ? '<div class="vacio">' + icon('alert', 28) + '<b>No se pudo cargar</b><p>' + esc(Us.err) + '</p><button type="button" class="btn btn-suave" data-us="reintentar">Reintentar</button></div>'
+        : '<div class="esq esq-fila"></div><div class="esq esq-fila"></div><div class="esq esq-fila"></div>');
+      return;
+    }
+    const l = Us.lista.slice().sort((a, b) => (a.activo === b.activo ? norm_(a.nombre).localeCompare(norm_(b.nombre)) : a.activo ? -1 : 1));
+    el.innerHTML = barra + '<div class="al-lista">' + l.map(Us.fila).join('') + '</div>';
+  },
+
+  nivelSel(cur) {
+    return '<div class="campo"><label for="usNivel">Nivel</label><select id="usNivel" class="input">' +
+      ['Admin', 'Recepcion'].map((n) => '<option value="' + n + '"' + (n === cur ? ' selected' : '') + '>' + esc(NIVEL_TXT[n]) + '</option>').join('') + '</select></div>';
+  },
+  nuevo() {
+    Adm.abrir('Nuevo usuario',
+      '<section class="paso">' + Adm.campo('usEmail', 'Correo', '', 'type="email" inputmode="email" autocapitalize="off" spellcheck="false" maxlength="120"') +
+      Adm.campo('usNombre', 'Nombre completo', '', 'maxlength="100"') + Us.nivelSel('Recepcion') + Pw.campo('usClave') + '</section>',
+    async () => {
+      const email = $('#usEmail').value.trim().toLowerCase(), nombre = $('#usNombre').value.trim(), campo = $('#usClave');
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error('Escribe el correo completo.');
+      if (!nombre) throw new Error('Escribe el nombre completo.');
+      if (!Pw.valida(campo.value)) throw new Error(Pw.MSG);
+      await api('users.create', { email, nombre, nivel: $('#usNivel').value, password: campo.value });
+      campo.value = ''; // la contraseña no se conserva
+      toast('Usuario creado.', 'ok');
+      Us.lista = null;
+      await Adm.recargar(['user']);
+    });
+  },
+  editar(email) {
+    const u = (Us.lista || []).filter((x) => x.email === email)[0];
+    if (!u) return;
+    Adm.abrir('Editar usuario',
+      '<section class="paso"><p class="ayuda">' + esc(u.email) + '</p>' + Adm.campo('usNombre', 'Nombre completo', u.nombre, 'maxlength="100"') + Us.nivelSel(u.nivel) +
+      Adm.chk('usActivo', 'Usuario activo (puede entrar)', u.activo) +
+      '<button type="button" class="btn btn-suave" data-us-clave="' + esc(u.email) + '">' + icon('lock', 18) + 'Cambiar contraseña</button></section>',
+    async () => {
+      const nombre = $('#usNombre').value.trim();
+      if (!nombre) throw new Error('Escribe el nombre completo.');
+      const d = { email: u.email };
+      if (nombre !== u.nombre) d.nombre = nombre;
+      if ($('#usNivel').value !== u.nivel) d.nivel = $('#usNivel').value;
+      if ($('#usActivo').checked !== u.activo) d.activo = $('#usActivo').checked;
+      if (Object.keys(d).length > 1) await api('users.update', d); // el servidor impide quitar al último administrador
+      toast('Usuario guardado.', 'ok');
+      Us.lista = null;
+      await Adm.recargar(['user']);
+    });
+  },
+  clave(email) {
+    Adm.abrir('Cambiar contraseña', '<section class="paso"><p class="ayuda">' + esc(email) + '</p>' + Pw.campo('usClave') + '</section>',
+    async () => {
+      const campo = $('#usClave');
+      if (!Pw.valida(campo.value)) throw new Error(Pw.MSG);
+      await api('users.setPassword', { email, password: campo.value });
+      campo.value = '';
+      toast('Contraseña cambiada.', 'ok');
+    }, 'Cambiar contraseña');
+  },
+};
+document.addEventListener('click', (e) => {
+  const b = e.target.closest ? e.target.closest('[data-us],[data-us-clave]') : null;
+  if (!b) return;
+  if (b.dataset.usClave) Us.clave(b.dataset.usClave);
+  else if (b.dataset.us === 'nuevo') Us.nuevo();
+  else if (b.dataset.us === 'reintentar') { Us.err = ''; Router.render({ conservarScroll: true }); }
+  else Us.editar(b.dataset.us);
+});
+
+registerView('usuarios', { titulo: 'Usuarios', icono: 'shield', soloAdmin: true, render: (el) => Us.render(el) });

@@ -1,0 +1,105 @@
+'use strict';
+/* Progreso (administrador): resumen de una semana o un mes. progreso.get calcula todo en el servidor.
+ * Las barras de horas por instructor son CSS puro: el ancho se pone desde JS tras pintar (la CSP no admite style=).
+ * Colores de la barra (una sola serie): variables --viz-1 de css/app.css, validadas para claro y oscuro (skill dataviz).
+ * Cada barra lleva su valor escrito al final y la tabla completa va debajo del nombre: nada depende solo del color. */
+
+const Pg = {
+  tipo: 'semana', fecha: '',
+  d: null, err: '', gen: 0,
+
+  hoy: () => Hoy.hoy(),
+  ancla() { return Pg.fecha || Pg.hoy(); },
+  rango() { const f = Pg.ancla(); return Pg.tipo === 'mes' ? Calc.monthRange(f) : Calc.weekRange(f); },
+
+  /** "Semana 25–31 oct 2026" · "Octubre 2026" */
+  etiqueta() {
+    const r = Pg.rango(), a = partesFecha(r.start), b = partesFecha(r.end);
+    if (Pg.tipo === 'mes') return cap(MESES[a.m - 1]) + ' ' + a.y;
+    const ini = a.m === b.m && a.y === b.y ? String(a.d) : a.d + ' ' + MESES_CORTOS[a.m - 1] + (a.y !== b.y ? ' ' + a.y : '');
+    return 'Semana ' + ini + (a.m === b.m && a.y === b.y ? '–' : ' – ') + b.d + ' ' + MESES_CORTOS[b.m - 1] + ' ' + b.y;
+  },
+  mover(n) {
+    const r = Pg.rango();
+    Pg.fecha = Pg.tipo === 'mes' ? Calc.addMonths(r.start, n) : Calc.addDays(r.start, 7 * n);
+    Pg.cargar();
+  },
+  futuro: () => Pg.rango().end >= Pg.hoy(),
+
+  /** Pide el periodo elegido; descarta la respuesta si mientras tanto se eligió otro. */
+  pedir() {
+    const gen = ++Pg.gen;
+    Pg.d = null; Pg.err = '';
+    api('progreso.get', { tipo: Pg.tipo, fecha: Pg.ancla() })
+      .then((d) => { if (gen === Pg.gen) Pg.d = d; })
+      .catch((e) => { if (gen === Pg.gen) Pg.err = e.message || MENSAJES.INTERNAL; })
+      .then(() => { if (gen === Pg.gen && S.ruta.nombre === 'progreso') Router.render({ conservarScroll: true }); });
+  },
+  cargar() { Pg.pedir(); Router.render({ conservarScroll: true }); },
+
+  /** Cambio frente al periodo anterior: flecha + texto + color (nunca solo color). Con 0 antes no hay porcentaje. */
+  delta(total, ant) {
+    const vs = Pg.tipo === 'mes' ? 'al mes anterior' : 'a la semana anterior';
+    if (!(ant > 0)) return '<span class="chip pg-delta">— frente ' + vs + '</span>';
+    const pct = Math.round((total - ant) / ant * 100);
+    if (pct === 0) return '<span class="chip pg-delta">' + icon('minus', 14) + 'Igual ' + vs + '</span>';
+    return '<span class="chip ' + (pct > 0 ? 'chip-verde' : 'chip-rojo') + ' pg-delta">' + icon(pct > 0 ? 'arrowUp' : 'arrowDown', 14) +
+      (pct > 0 ? '+' : '−') + Math.abs(pct) + ' % frente ' + vs + '</span>';
+  },
+  fila: (txt, val, cls) => '<li><span>' + esc(txt) + '</span><b' + (cls ? ' class="' + cls + '"' : '') + '>' + esc(val) + '</b></li>',
+
+  tarjetas(d) {
+    const c = d.clases, tot = d.cobrado.total;
+    const card = (t, ic, cuerpo) => '<section class="card pg-card"><h2 class="card-titulo">' + icon(ic, 16) + esc(t) + '</h2>' + cuerpo + '</section>';
+    const metodos = Calc.METODOS.map((m) => Pg.fila(m, money(d.cobrado.porMetodo[m] || 0), (d.cobrado.porMetodo[m] || 0) ? '' : 'pg-cero')).join('');
+    const planes = d.alumnosNuevos.porPlan.length ? d.alumnosNuevos.porPlan.map((p) => Pg.fila(p.plan, String(p.n))).join('') : '<li class="pg-cero"><span>Sin ventas nuevas</span></li>';
+    return card('Cobrado', 'cash', '<p class="pg-gran">' + esc(money(tot)) + '</p>' + Pg.delta(tot, d.cobradoAnterior) + '<ul class="pg-lista">' + metodos + '</ul>') +
+      card('Clases dadas', 'calCheck', '<p class="pg-gran">' + esc(c.dadas) + '</p><ul class="pg-lista">' + Pg.fila('Reagendadas', c.reagendadas) +
+        Pg.fila('Canceladas con descuento', c.canceladasDesc) + Pg.fila('Canceladas sin descuento', c.canceladasSin) + Pg.fila('No se presentó', c.noSePresento) + '</ul>') +
+      card('Alumnos nuevos', 'userPlus', '<p class="pg-gran">' + esc(d.alumnosNuevos.total) + '</p><ul class="pg-lista">' + planes + '</ul>') +
+      card('Pendiente de cobrar', 'alert', '<p class="pg-gran">' + esc(money(d.pendiente.vencido + d.pendiente.porVencer)) + '</p><ul class="pg-lista">' +
+        Pg.fila('Vencido', money(d.pendiente.vencido), d.pendiente.vencido ? 'pg-malo' : 'pg-cero') + Pg.fila('Por vencer (' + (Number(S.cfg.DIAS_POR_VENCER) || 0) + ' días)', money(d.pendiente.porVencer)) + '</ul>' +
+        '<p class="ayuda">Es la situación de hoy, no del periodo.</p>') +
+      card('Alumnos activos', 'users', '<p class="pg-gran">' + esc(d.alumnosActivos) + '</p><p class="ayuda">Con clases por dar o agendadas, hoy.</p>');
+  },
+  instructores(d) {
+    const l = d.instructores, max = Math.max.apply(null, l.map((i) => i.horas).concat([0]));
+    const filas = l.map((i) => '<li class="pg-bar"><span class="pg-bar-nom">' + esc(i.nombre || 'Sin nombre') + '</span>' +
+      '<span class="pg-pista" aria-hidden="true"><i data-w="' + (max > 0 ? Math.max(2, Math.round(i.horas / max * 100)) : 0) + '"></i></span>' +
+      '<span class="pg-bar-val"><b>' + esc(horasTxt_(i.horas)) + '</b><small>' + esc(clasesTxt_(i.clases)) + '</small></span></li>').join('');
+    return '<section class="card pg-card pg-ancho"><h2 class="card-titulo">' + icon('wheel', 16) + 'Horas por instructor</h2>' +
+      (l.length ? '<ul class="pg-barras" aria-label="Horas dadas por cada instructor en el periodo">' + filas + '</ul>' : '<p class="ayuda">Nadie dio clases en este periodo.</p>') + '</section>';
+  },
+
+  render(el) {
+    const ant = '<button type="button" class="btn-icono" data-pg="ant" aria-label="Periodo anterior">' + icon('left', 20) + '</button>';
+    const sig = '<button type="button" class="btn-icono" data-pg="sig" aria-label="Periodo siguiente"' + (Pg.futuro() ? ' disabled' : '') + '>' + icon('right', 20) + '</button>';
+    const tipo = (k, t) => '<button type="button" class="' + (Pg.tipo === k ? 'activo' : '') + '" role="tab" aria-selected="' + (Pg.tipo === k) + '" data-pg="tipo" data-t="' + k + '">' + t + '</button>';
+    let cuerpo;
+    if (Pg.err) cuerpo = '<div class="vacio">' + icon('alert', 28) + '<b>No se pudo cargar</b><p>' + esc(Pg.err) + '</p><button type="button" class="btn btn-suave" data-pg="reintentar">Reintentar</button></div>';
+    else if (!Pg.d) cuerpo = '<div class="kpis"><div class="esq esq-kpi"></div><div class="esq esq-kpi"></div></div><div class="esq esq-linea"></div>';
+    else cuerpo = '<div class="pg-grid">' + Pg.tarjetas(Pg.d) + Pg.instructores(Pg.d) + '</div>';
+    el.innerHTML = '<div class="pg-barra"><div class="seg" role="tablist" aria-label="Periodo">' + tipo('semana', 'Semana') + tipo('mes', 'Mes') + '</div>' +
+      '<div class="pg-nav">' + ant + '<b class="pg-etq" aria-live="polite">' + esc(Pg.etiqueta()) + '</b>' + sig + '</div>' +
+      '<button type="button" class="btn btn-suave" data-pg="hoy">Hoy</button></div>' + cuerpo;
+    $$('.pg-pista i', el).forEach((i) => { i.style.width = i.dataset.w + '%'; });
+  },
+};
+document.addEventListener('click', (e) => {
+  const b = e.target.closest ? e.target.closest('[data-pg]') : null;
+  if (!b || b.disabled) return;
+  const a = b.dataset.pg;
+  if (a === 'ant') Pg.mover(-1);
+  else if (a === 'sig') Pg.mover(1);
+  else if (a === 'hoy') { Pg.fecha = ''; Pg.cargar(); }
+  else if (a === 'tipo') { if (Pg.tipo !== b.dataset.t) { Pg.tipo = b.dataset.t === 'mes' ? 'mes' : 'semana'; Pg.cargar(); } }
+  else if (a === 'reintentar') Pg.cargar();
+});
+
+registerView('progreso', {
+  titulo: 'Progreso', icono: 'chart', soloAdmin: true,
+  render(el) {
+    if (el.classList.contains('entra')) Pg.pedir(); // al entrar siempre se calcula de nuevo
+    Pg.render(el);
+  },
+});

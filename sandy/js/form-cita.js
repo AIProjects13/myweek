@@ -1,0 +1,254 @@
+'use strict';
+/* Formulario de nueva cita (abrirNuevaCita). Usa los ayudantes y Agenda de views-agenda.js. */
+
+/* ================================ NUEVA CITA =============================== */
+const NC = {
+  s: null,
+
+  abrir(o) {
+    o = o || {};
+    let idAlumno = o.idAlumno || '', idVenta = o.idVenta || '';
+    const v = idVenta ? S.ventas.filter((x) => x.id === idVenta)[0] : null;
+    if (v) idAlumno = v.idAlumno;
+    const hoy = Agenda.hoy();
+    let fecha = o.fecha && o.fecha >= hoy ? o.fecha : hoy;
+    for (let i = 0; i < 7 && diasAtencion_().indexOf(Calc.dow(fecha)) < 0; i++) fecha = Calc.addDays(fecha, 1);
+    const ins = S.instructores.filter((i) => i.activo);
+    NC.s = {
+      idAlumno, idVenta: '', idInstructor: ins.length === 1 ? String(ins[0].id) : '', hora: o.hora || '08:00', minutos: 60,
+      tipo: 'seguidas', inicio: fecha, cantidad: 1, sueltas: [], calMes: Calc.monthRange(fecha).start, nota: '', q: '', srv: null, err: '', guardando: false, listo: false,
+    };
+    if (!NC.horasOpc().some((h) => h === NC.s.hora)) NC.s.hora = NC.horasOpc()[0] || horaIni_();
+    if (idAlumno) NC.elegirAlumno(idAlumno, idVenta, true);
+    NC.pintar();
+  },
+
+  ventasAlumno() { return S.ventas.filter((v) => v.idAlumno === NC.s.idAlumno && v.avance && v.avance.libres > 0); },
+  venta() { return S.ventas.filter((v) => v.id === NC.s.idVenta)[0] || null; },
+  alumno() { return S.alumnos.filter((a) => a.id === NC.s.idAlumno)[0] || null; },
+
+  elegirAlumno(id, idVenta, sinPintar) {
+    const s = NC.s;
+    s.idAlumno = id; s.idVenta = ''; s.q = '';
+    const vs = NC.ventasAlumno();
+    const v = (idVenta && vs.filter((x) => x.id === idVenta)[0]) || (vs.length === 1 ? vs[0] : null);
+    if (v) NC.elegirVenta(v.id, true);
+    if (!sinPintar) NC.pintar();
+  },
+  elegirVenta(id, sinPintar) {
+    const s = NC.s, v = S.ventas.filter((x) => x.id === id)[0];
+    s.idVenta = id; s.srv = null; s.err = '';
+    if (v) {
+      const por = v.horas !== '' && v.horas !== null && v.horas !== undefined && v.citas ? Number(v.horas) * 60 / v.citas : 60;
+      s.minutos = Math.max(15, Math.round((isFinite(por) ? por : 60) / 15) * 15);
+      s.cantidad = Math.max(1, Math.min(v.avance.libres, 5));
+    }
+    if (!sinPintar) NC.pintar();
+  },
+
+  /** Horas de inicio cada 15 min; `extra` (la hora actual de una cita) se agrega si quedó fuera del horario. */
+  horasOpc(extra) {
+    const out = [], fin = Calc.finCita(horaFin_(), 0);
+    for (let m = Calc.finCita(horaIni_(), 0); m + 15 <= fin; m += 15) out.push(horaTxt_(m));
+    if (extra && out.indexOf(extra) < 0) { out.push(extra); out.sort(); }
+    return out;
+  },
+  minutosOpc(actual) {
+    const out = [];
+    for (let m = 15; m <= 300; m += 15) out.push(m);
+    if (out.indexOf(Number(actual)) < 0 && Number(actual) > 0) { out.push(Number(actual)); out.sort((a, b) => a - b); }
+    return out;
+  },
+  durTxt(m) { return m < 60 ? m + ' min' : (m % 60 ? Math.floor(m / 60) + ' h ' + (m % 60) + ' min' : m / 60 + (m === 60 ? ' hora' : ' horas')); },
+
+  fechas() {
+    const s = NC.s, n = Math.max(0, Math.min(200, Math.floor(Number(s.cantidad)) || 0));
+    if (s.tipo === 'sueltas') return Calc.fechasPatron('sueltas', '', 0, { fechas: s.sueltas });
+    if (!partesFecha(s.inicio) || !n) return [];
+    return Calc.fechasPatron(s.tipo, s.inicio, n, { dias: diasAtencion_() });
+  },
+
+  /** Revisión previa en la página (el servidor decide al guardar). → {g: avisos generales, items: [{f, p: problemas}]} */
+  revisar() {
+    const s = NC.s, v = NC.venta(), g = [], items = [];
+    if (!v) return { g, items, fechas: [] };
+    const fechas = NC.fechas(), min = Number(s.minutos) || 0;
+    if (!s.idInstructor) g.push('Elige el instructor.');
+    if (min < 15) g.push('La duración mínima es de 15 minutos.');
+    else if (Calc.cruzaMedianoche(s.hora, min)) g.push('La clase no puede pasar de la medianoche.');
+    else if (Calc.finCita(s.hora, 0) < Calc.finCita(horaIni_(), 0) || Calc.finCita(s.hora, min) > Calc.finCita(horaFin_(), 0)) g.push('La clase debe quedar entre las ' + horaIni_() + ' y las ' + horaFin_() + '.');
+    if (!fechas.length) g.push(s.tipo === 'sueltas' ? 'Marca las fechas en el calendario.' : 'Indica la fecha de inicio y cuántas clases.');
+    else if (fechas.length > v.avance.libres) g.push('Solo quedan ' + v.avance.libres + ' clases por agendar en este paquete y pides ' + fechas.length + '.');
+    const dias = diasAtencion_(), vivas = Agenda.todas().filter((c) => c.estado === 'Programada' || c.estado === 'Dada');
+    fechas.forEach((f) => {
+      const p = [];
+      if (dias.indexOf(Calc.dow(f)) < 0) p.push('No es día de atención.');
+      if (s.hora && Calc.citaMs(f, s.hora) <= ahoraMs()) p.push('Esa hora ya pasó.');
+      if (s.idInstructor && min >= 15) {
+        for (let i = 0; i < vivas.length; i++) {
+          const c = vivas[i];
+          const mismoIns = String(c.idInstructor) === String(s.idInstructor), mismoAl = c.idAlumno === s.idAlumno;
+          if ((mismoIns || mismoAl) && Calc.seCruzan({ fecha: f, hora: s.hora, minutos: min }, c)) {
+            p.push(mismoIns ? 'Choca con ' + (c.alumno || 'otra clase') + ' a las ' + c.hora + ' (' + (c.instructor || 'el instructor') + ').' : 'El alumno ya tiene clase a las ' + c.hora + '.');
+            break;
+          }
+        }
+      }
+      if (s.srv && s.srv[f]) p.push('Choque de horario según el servidor.');
+      items.push({ f, p });
+    });
+    return { g, items, fechas };
+  },
+
+  resultados() {
+    const q = norm_(NC.s.q).trim(), dig = q.replace(/\D/g, '');
+    if (!q) return '<p class="dia-vacio">Escribe un nombre o un teléfono.</p>';
+    const l = S.alumnos.filter((a) => norm_(a.nombre).indexOf(q) >= 0 || (dig.length >= 2 && String(a.telefono || '').replace(/\D/g, '').indexOf(dig) >= 0));
+    if (!l.length) return '<p class="dia-vacio">No hay alumnos con ese dato.</p>';
+    return l.slice(0, 20).map((a) => {
+      const libres = S.ventas.filter((v) => v.idAlumno === a.id).reduce((n, v) => n + (v.avance ? Math.max(0, v.avance.libres) : 0), 0);
+      return '<button type="button" class="opcion" data-ag="nc-alumno" data-id="' + esc(a.id) + '"><span><b>' + esc(a.nombre) + '</b><small>' + esc(a.telefono || 'Sin teléfono') + '</small></span>' +
+        '<span class="chip ' + (libres ? 'chip-azul' : '') + '">' + (libres ? 'quedan ' + libres : 'sin clases libres') + '</span></button>';
+    }).join('') + (l.length > 20 ? '<p class="dia-vacio">Hay más: escribe más letras para afinar.</p>' : '');
+  },
+
+  calendario() {
+    const s = NC.s, m = Calc.monthRange(s.calMes), hoy = Agenda.hoy(), dias = diasAtencion_();
+    let h = '<div class="mini-cab"><button type="button" class="btn-icono" data-ag="nc-mes" data-d="-1" aria-label="Mes anterior">' + icon('left', 18) + '</button><b>' + esc(mesTitulo_(s.calMes)) + '</b>' +
+      '<button type="button" class="btn-icono" data-ag="nc-mes" data-d="1" aria-label="Mes siguiente">' + icon('right', 18) + '</button></div>' +
+      '<div class="mini-sem">' + DIAS_CORTOS.map((d) => '<span>' + esc(d.charAt(0)) + '</span>').join('') + '</div><div class="mcal">';
+    for (let i = 0; i < Calc.dow(m.start); i++) h += '<span></span>';
+    for (let f = m.start; f <= m.end; f = Calc.addDays(f, 1)) {
+      const off = f < hoy || dias.indexOf(Calc.dow(f)) < 0, on = s.sueltas.indexOf(f) >= 0;
+      h += '<button type="button" class="mini-d' + (on ? ' on' : '') + '" data-ag="nc-dia" data-f="' + f + '"' + (off ? ' disabled' : '') + ' aria-pressed="' + on + '" aria-label="' + esc(fechaLarga(f)) + '">' + partesFecha(f).d + '</button>';
+    }
+    return h + '</div>';
+  },
+
+  previa() {
+    const s = NC.s, v = NC.venta();
+    if (!v) return '';
+    const r = NC.revisar(), min = Number(s.minutos) || 0;
+    const items = r.items.map((x, i) => '<li class="prev-i' + (x.p.length ? ' mal' : '') + '"><span class="prev-n">' + (i + 1) + '</span><span class="prev-t"><b>' + esc(fechaCorta(x.f)) + ' · ' + esc(s.hora) + (min ? '–' + esc(horaTxt_(Calc.finCita(s.hora, min))) : '') + '</b>' +
+      (x.p.length ? '<small>' + x.p.map(esc).join(' ') + '</small>' : '') + '</span>' +
+      (x.p.length ? '<span class="chip chip-rojo">Choque</span>' : '<span class="chip chip-verde">OK</span>') + '</li>').join('');
+    const malos = r.items.filter((x) => x.p.length).length;
+    return (r.g.length ? '<div class="aviso aviso-error">' + r.g.map(esc).join(' ') + '</div>' : '') +
+      (items ? '<ul class="prev">' + items + '</ul>' : '') +
+      (NC.s.err ? '<div class="aviso aviso-error">' + esc(NC.s.err) + '</div>' : '') +
+      '<button type="button" id="ncGuardar" class="btn btn-primario btn-grande btn-bloque" data-ag="nc-guardar"' + (r.g.length || malos || s.guardando ? ' disabled' : '') + '>' +
+      (s.guardando ? 'Guardando…' : 'Guardar ' + r.items.length + (r.items.length === 1 ? ' clase' : ' clases')) + '</button>';
+  },
+
+  cuerpo() {
+    const s = NC.s, a = NC.alumno(), v = NC.venta();
+    let h = '<div class="form-ag"><section class="paso"><h3>Alumno</h3>';
+    if (a) {
+      h += '<div class="nc-sel"><span><b>' + esc(a.nombre) + '</b><small>' + esc(a.telefono || '') + '</small></span><button type="button" class="btn btn-enlace" data-ag="nc-cambiar">Cambiar</button></div>';
+    } else {
+      h += '<div class="campo"><label for="ncQ">Buscar alumno</label><input id="ncQ" class="input" type="search" placeholder="Nombre o teléfono" autocomplete="off" data-ag-in="q" value="' + esc(s.q) + '"></div>' +
+        '<div id="ncRes" class="opciones">' + NC.resultados() + '</div>';
+    }
+    h += '</section>';
+    if (a) {
+      const vs = NC.ventasAlumno();
+      h += '<section class="paso"><h3>Paquete</h3>' + (vs.length ? '<div class="opciones">' + vs.map((x) => '<button type="button" class="opcion' + (x.id === s.idVenta ? ' sel' : '') + '" data-ag="nc-venta" data-id="' + esc(x.id) + '" aria-pressed="' + (x.id === s.idVenta) + '">' +
+        '<span><b>' + esc(x.planNombre) + '</b><small>' + x.avance.agendadas + ' agendadas · ' + x.avance.consumidas + ' dadas</small></span><span class="chip chip-azul">quedan ' + x.avance.libres + '</span></button>').join('') + '</div>'
+        : '<div class="aviso">Este alumno no tiene clases libres en ningún paquete.</div>') + '</section>';
+    }
+    if (v) {
+      const ins = S.instructores.filter((i) => i.activo);
+      h += '<section class="paso"><h3>Horario</h3><div class="campo"><label for="ncIns">Instructor</label><select id="ncIns" class="input" data-ag-in="idInstructor"><option value="">Elige instructor</option>' +
+        ins.map((i) => '<option value="' + esc(i.id) + '"' + (String(i.id) === s.idInstructor ? ' selected' : '') + '>' + esc(i.nombre) + '</option>').join('') + '</select></div>' +
+        '<div class="dos"><div class="campo"><label for="ncHora">Hora</label><select id="ncHora" class="input" data-ag-in="hora">' +
+        NC.horasOpc().map((x) => '<option' + (x === s.hora ? ' selected' : '') + '>' + esc(x) + '</option>').join('') + '</select></div>' +
+        '<div class="campo"><label for="ncMin">Duración</label><select id="ncMin" class="input" data-ag-in="minutos">' +
+        NC.minutosOpc(s.minutos).map((m) => '<option value="' + m + '"' + (m === Number(s.minutos) ? ' selected' : '') + '>' + esc(NC.durTxt(m)) + '</option>').join('') + '</select></div></div></section>' +
+        '<section class="paso"><h3>Repetir</h3><div class="seg seg-ancho" role="tablist">' +
+        [['seguidas', 'Seguidas'], ['semanal', 'Un día por semana'], ['sueltas', 'Fechas sueltas']].map((t) => '<button type="button" role="tab" aria-selected="' + (s.tipo === t[0]) + '" class="' + (s.tipo === t[0] ? 'activo' : '') + '" data-ag="nc-tipo" data-t="' + t[0] + '">' + t[1] + '</button>').join('') + '</div>';
+      if (s.tipo === 'sueltas') {
+        h += '<p class="ayuda">Toca los días que quieras. Marcadas: ' + s.sueltas.length + '.</p>' + NC.calendario();
+      } else {
+        h += '<div class="dos"><div class="campo"><label for="ncIni">Primera clase</label><input id="ncIni" class="input" type="date" min="' + esc(Agenda.hoy()) + '" value="' + esc(s.inicio) + '" data-ag-in="inicio"></div>' +
+          '<div class="campo"><label for="ncCant">Cuántas clases</label><input id="ncCant" class="input" type="number" inputmode="numeric" min="1" max="' + v.avance.libres + '" value="' + esc(s.cantidad) + '" data-ag-in="cantidad"></div></div>' +
+          '<p class="ayuda">' + (s.tipo === 'seguidas' ? 'Un día tras otro, saltando los días sin atención.' : 'La misma hora, cada 7 días.') + '</p>';
+      }
+      h += '</section><section class="paso"><h3>Nota (opcional)</h3><textarea class="input" rows="2" maxlength="500" data-ag-in="nota">' + esc(s.nota) + '</textarea></section>' +
+        '<section class="paso"><h3>Vista previa</h3><div id="ncPrev">' + NC.previa() + '</div></section>';
+    }
+    return h + '</div>';
+  },
+
+  pintar() {
+    if (!NC.s) return;
+    hojaPintar_(NC, NC.cuerpo(), 'Nueva cita', () => { NC.s = null; });
+  },
+  pintarPrevia() {
+    const el = document.getElementById('ncPrev');
+    if (el && NC.s) el.innerHTML = NC.previa();
+  },
+
+  entrada(nom, el) {
+    const s = NC.s;
+    if (!s) return;
+    s.srv = null; s.err = '';
+    if (nom === 'q') { s.q = el.value; const r = document.getElementById('ncRes'); if (r) r.innerHTML = NC.resultados(); return; }
+    if (nom === 'minutos') s.minutos = Number(el.value);
+    else if (nom === 'cantidad') s.cantidad = el.value;
+    else s[nom] = el.value;
+    NC.pintarPrevia();
+  },
+
+  async guardar() {
+    const s = NC.s, r = NC.revisar();
+    if (!s || s.guardando || r.g.length || r.items.some((x) => x.p.length)) return;
+    const fechas = r.fechas;
+    const patron = s.tipo === 'sueltas' ? { tipo: 'sueltas', inicio: fechas[0], cantidad: fechas.length, fechas } : { tipo: s.tipo, inicio: s.inicio, cantidad: fechas.length };
+    s.guardando = true; s.err = ''; NC.pintarPrevia();
+    try {
+      const out = await api('citas.create', { idVenta: s.idVenta, idInstructor: s.idInstructor, hora: s.hora, minutos: Number(s.minutos), patron, nota: s.nota.trim() });
+      const n = (out && out.length) || fechas.length;
+      NC.s = null;
+      if (hojaActual) hojaActual.cerrar();
+      toast(n === 1 ? 'Se agendó 1 clase.' : 'Se agendaron ' + n + ' clases.', 'ok');
+      Agenda.limpiar();
+      try { await refresh(['citas', 'ventas']); } catch (e) { /* los datos se actualizan en la próxima carga */ }
+    } catch (e) {
+      s.guardando = false;
+      s.err = e.message || MENSAJES.INTERNAL;
+      if (e.code === 'CONFLICT') {
+        const marcas = {};
+        String(e.message).replace(/(\d{4}-\d{2}-\d{2}) \d{2}:\d{2} con/g, (m, f) => { marcas[f] = true; return m; });
+        s.srv = marcas;
+      }
+      if (e.code === 'NETWORK_ESCRITURA') s.err = 'Se perdió la conexión y no se sabe si se guardó. Revisa la agenda antes de repetir.';
+      NC.pintarPrevia();
+    }
+  },
+};
+
+function abrirNuevaCita(o) { NC.abrir(o); }
+
+document.addEventListener('click', (e) => {
+  const b = e.target.closest('[data-ag^="nc-"]');
+  if (!b || !NC.s) return;
+  const a = b.dataset.ag, id = b.dataset.id;
+  if (a === 'nc-alumno') NC.elegirAlumno(id);
+  else if (a === 'nc-cambiar') { NC.s.idAlumno = ''; NC.s.idVenta = ''; NC.pintar(); }
+  else if (a === 'nc-venta') NC.elegirVenta(id);
+  else if (a === 'nc-tipo') { NC.s.tipo = b.dataset.t; NC.s.srv = null; NC.s.err = ''; NC.pintar(); }
+  else if (a === 'nc-mes') { NC.s.calMes = Calc.addMonths(NC.s.calMes, +b.dataset.d); NC.pintar(); }
+  else if (a === 'nc-dia') {
+    const l = NC.s.sueltas, i = l.indexOf(b.dataset.f);
+    if (i >= 0) l.splice(i, 1); else l.push(b.dataset.f);
+    NC.s.sueltas = l.slice().sort(); NC.s.srv = null; NC.s.err = ''; NC.pintar();
+  } else if (a === 'nc-guardar') NC.guardar();
+});
+
+document.addEventListener('input', (e) => {
+  const el = e.target.closest ? e.target.closest('[data-ag-in]') : null;
+  if (!el || !NC.s) return;
+  const nom = el.dataset.agIn;
+  if (/^f-|^motivo$/.test(nom)) return; // son del detalle de cita
+  NC.entrada(nom, el);
+});
